@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#217346"><link rel="manifest" href="manifest.json"><link rel="icon" href="icon-192.png"><link rel="apple-touch-icon" href="icon-192.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Excel操作题">
 <title>Excel 操作题 · 互动练习与考试（第4章）</title>
 <style>
 :root{--g:#217346;--g2:#185c37;--bd:#d4d4d4;--ok:#16a34a;--bad:#dc2626}
@@ -63,18 +63,60 @@ header b{font-size:17px}header nav{display:flex;gap:4px;flex-wrap:wrap}
 table.t{border-collapse:collapse;width:100%}table.t td,table.t th{border-bottom:1px solid #eee;padding:7px;text-align:left;vertical-align:top}
 .opt{display:block;width:100%;text-align:left;padding:10px;margin:6px 0;border:2px solid #e2e2e2;background:#fff;border-radius:8px;cursor:pointer;font-size:14px}.opt.ok{border-color:var(--ok);background:#effaf3}.opt.bad{border-color:var(--bad);background:#fdecec}
 .big{font-size:48px;font-weight:800;color:var(--g)}
+
+#grid tr:first-child th{position:sticky;top:0;z-index:2}#grid th[data-row]{position:sticky;left:0;z-index:1}#grid th.corner{position:sticky;left:0;top:0;z-index:3}
+#gw{overscroll-behavior:contain;-webkit-overflow-scrolling:touch}#gw.tsel{touch-action:none}#fh{touch-action:none}
+#grid{zoom:var(--z,1)}body{-webkit-touch-callout:none;touch-action:manipulation}
+#selbar{display:flex;gap:4px;align-items:center;padding:4px 6px;border-bottom:1px solid var(--bd);background:#fafafa;overflow-x:auto;white-space:nowrap;font-size:13px}
+#selbar button{border:1px solid #ccc;background:#fff;border-radius:6px;padding:3px 8px;font-size:13px;cursor:pointer;flex:none}
+#chip{background:#e7f3ec;color:var(--g2);border-radius:99px;padding:3px 10px;font-weight:700;flex:none}
+.seg{display:inline-flex;flex:none}.seg button{border-radius:0!important;margin-left:-1px}.seg button:first-child{border-radius:6px 0 0 6px!important}.seg button:last-child{border-radius:0 6px 6px 0!important}.seg button.on{background:var(--g);color:#fff;border-color:var(--g)}
+#mbar,.mob{display:none}
+@media(max-width:760px){
+ body{font-size:15px;padding-bottom:calc(118px + env(safe-area-inset-bottom))}
+ header{padding:6px 10px;padding-top:calc(6px + env(safe-area-inset-top));gap:4px;flex-wrap:nowrap;flex-direction:column;align-items:stretch}
+ header b{font-size:15px}header nav{flex-wrap:nowrap;overflow-x:auto}.mt{padding:10px 12px;min-height:44px;flex:none;font-size:15px}
+ #stat{margin:0;font-size:12px}
+ #wrap{padding:6px;gap:6px;padding-left:max(6px,env(safe-area-inset-left));padding-right:max(6px,env(safe-area-inset-right))}
+ .card{padding:10px}#qtext{font-size:16px;margin:4px 0}.mob{display:inline-block}
+ #qp.col .cx{display:none}
+ .tabs{flex-wrap:nowrap;overflow-x:auto;padding:0}.tabs span{padding:12px 14px;min-height:44px;flex:none;font-size:14px;white-space:nowrap}
+ #ribbon{min-height:0}.grp .bs{flex-wrap:nowrap;max-width:none}.rb{min-height:44px;min-width:44px;font-size:14px;padding:6px 10px}
+ #selbar button{min-height:40px;min-width:40px;font-size:14px}#chip{font-size:14px;padding:8px 10px}
+ #gw{height:46vh}#grid td,#grid th{height:30px;font-size:14px}.farrow{width:22px;height:22px;line-height:20px;font-size:11px;top:3px}
+ #fh{width:18px;height:18px;margin:-6px 0 0 -6px;border-radius:50%;border:2px solid #fff;box-shadow:0 0 3px #000}
+ #chart{left:10px;top:150px;transform:scale(.9);transform-origin:0 0}
+ .fx input,.sheets input,.db input,.db select{font-size:16px!important}.sheets span{padding:10px 14px}
+ .menu{left:0!important;right:0;top:auto!important;bottom:0;width:100%;min-width:0;max-height:62vh;border-radius:14px 14px 0 0;padding-bottom:env(safe-area-inset-bottom);font-size:15px;box-shadow:0 -4px 20px rgba(0,0,0,.25)}
+ .menu .mi{min-height:44px;padding:10px 16px}.menu.grid{grid-template-columns:repeat(5,1fr);max-width:none}.menu.grid .mi i{width:100%}
+ #ov{align-items:flex-end;background:rgba(0,0,0,.3)}
+ .dlg{min-width:0;width:100%;max-width:100%;border-radius:14px 14px 0 0;max-height:88vh;overflow:auto;padding-bottom:env(safe-area-inset-bottom);font-size:15px}
+ .dt{padding:14px;font-size:16px}.dt span{padding:0 8px;font-size:20px}.db input[type=text],.db select{width:100%;min-height:42px}
+ .db label{display:block;min-height:36px;line-height:36px}.db input[type=checkbox]{width:20px;height:20px;vertical-align:middle}
+ .df{display:flex;gap:8px}.df button{flex:1;min-height:46px;margin:0;font-size:16px}.srow{flex-wrap:wrap;gap:4px}.srow span{width:auto!important}
+ .dtabs{overflow-x:auto}.dtabs span{padding:10px 12px;flex:none}.sw{width:36px;height:36px}
+ #qlist button{width:40px;height:40px}.btn{min-height:44px}.opt{min-height:48px}
+ #mbar{display:block;position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:1px solid #ccc;box-shadow:0 -2px 10px rgba(0,0,0,.12);z-index:80;padding:6px 8px calc(6px + env(safe-area-inset-bottom))}
+ #mfb{font-size:13px;line-height:1.5;max-height:64px;overflow:auto;padding:4px 6px;border-radius:6px;background:#fff8e6}#mfb.ok{background:#effaf3;color:#14532d}#mfb.bad{background:#fdecec;color:#7f1d1d}
+ .mbb{display:flex;gap:6px;margin-top:6px}.mbb .btn{flex:1;margin:0}.mbb .red{background:#b91c1c}
+ #toast{bottom:140px}
+}
+#vov{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;align-items:center;justify-content:center;z-index:150;padding:env(safe-area-inset-top) 8px env(safe-area-inset-bottom)}
+#vov .vb{background:#fff;border-radius:12px;max-width:760px;width:100%;padding:12px;max-height:96vh;overflow:auto}#vov video{width:100%;max-height:62vh;background:#000;border-radius:8px}
+#vov h3{margin:0 0 4px;font-size:16px}#vov .vt{font-size:13px;color:#666;margin-bottom:8px}#vov .vbtn{display:flex;gap:8px;margin-top:8px}#vov .vbtn .btn{flex:1;min-height:46px;margin:0}
+#selbar button.on{background:#217346!important;color:#fff!important;border-color:#217346}
 </style></head><body>
 <header><b>📊 Excel 操作题 · 互动练习与考试</b><nav><button class="mt" data-m="learn">学习模式</button><button class="mt" data-m="exam">考试模式</button><button class="mt" data-m="wrong">错题本</button><button class="mt" data-m="area">选区总结</button></nav><span id="stat"></span></header>
 <div id="wrap">
 <div><div class="card" id="qp"></div></div>
 <div id="xl">
  <div class="tabs" id="tabs"></div><div id="ribbon"></div>
- <div class="fx"><div id="nb">A1</div><i>fx</i><input id="fxi" placeholder="在此输入内容或公式，按 Enter 确认"></div>
+ <div id="selbar"><span id="chip">已选 A1</span><span class="seg"><button data-sm="single" class="on">单选</button><button data-sm="range">范围</button><button data-sm="multi">+多选(Ctrl)</button></span><button id="sundo" title="撤销选区">↶ 撤销</button><button id="sclr" title="清除选区">✕ 清除</button><button id="ctxb">⋯ 右键菜单</button><button id="zo">−</button><button id="zi">＋</button></div><div class="fx"><div id="nb">A1</div><i>fx</i><input id="fxi" placeholder="在此输入内容或公式，按 Enter 确认"></div>
  <div id="gw"><table id="grid"></table><div id="fh"></div><div id="chart" style="display:none"></div></div>
  <div class="sheets"><span>◀ ▶</span><span class="on" id="stab">Sheet1</span><span style="color:#999">⊕</span></div>
 </div></div>
 <div id="view2"></div>
-<div id="ov"></div><div id="toast"></div>
+<div id="vov"></div><div id="mbar"></div><div id="ov"></div><div id="toast"></div>
 <script>
 /* ===== 基础 ===== */
 const COLS='ABCDEFGHIJ'.split(''),NC=10,NR=16;const L=c=>COLS[c-1],AD=(r,c)=>L(c)+r;
@@ -136,12 +178,18 @@ const QS=[
 {id:16,k:'4.6 迷你图',q:'设置迷你图颜色为紫色。',a:'选中 G1:G7，单击迷你图工具-迷你图选项卡，设置迷你图颜色为紫色。',sheet:()=>{const s=base({noG:1,g1:'迷你图'});for(let r=2;r<=7;r++)s.sparks[r+',7']={src:r,color:'#376092'};return s},
  paths:[[{c:'sparkColor',need:['G1:G7','G2:G7'],v:'紫色',t:'选中 G2:G7（含迷你图的单元格）→ 迷你图选项卡 → 迷你图颜色 ▾ → 紫色'}]]}];
 function sortChk(v,want){if(!v.hdr)return '数据包含列标题，应勾选「数据包含标题」';for(let i=0;i<want.length;i++){const k=v.keys[i],w=want[i],nm=i?'次要关键字':'主要关键字';if(!k||k[0]!=w[0])return `${nm}应为「${w[0]}」`;if(k[1]!=w[1])return `${nm}「${w[0]}」的次序应为「${w[1]}」`}if(v.keys.length>want.length)return '条件多了，删除多余的次要关键字';return 0}
+/* ===== 讲解视频（链接 zsb-excel-videos 站点，不复制文件） ===== */
+const VBASE='https://bernardshilohjazlene4049-crypto.github.io/zsb-excel-videos/videos/';
+const VID={1:['q05','重命名工作表'],2:['q14','单元格颜色（填充颜色）'],3:['q12','设置单元格格式（通用题型，含合并后居中）'],4:['q15','行高 / 列宽'],5:['q17','套用表格格式'],6:['q16','单元格样式'],7:['q18','条件格式'],8:['q20','输入公式或函数并填充'],9:['q21','单字段或多字段排序'],10:['q22','自动筛选'],11:['q23','分类汇总（第 1 步排序，第 2 步汇总）'],12:['q24','数据验证'],13:['q25','插入图表'],14:['q26','修饰图表'],15:['q27','插入迷你图'],16:['q28','修饰迷你图']};
+function showVideo(id,pre){const o=$('#vov'),v=VID[id],q=QS[id-1];
+ o.innerHTML=`<div class="vb"><h3>🎬 先看讲解 · 第 ${id} 题</h3><div class="vt">${q.q}<br>视频：${v?v[1]+'（'+v[0]+'）':''}</div>${v?`<video id="vid" controls playsinline webkit-playsinline preload="metadata" src="${VBASE+v[0]}.mp4"></video>`:'<p style="padding:30px;text-align:center;color:#888">暂无视频</p>'}<div class="vbtn"><button class="btn" id="vgo">${pre?'我看完了，去操作 →':'关闭视频'}</button></div></div>`;
+ o.style.display='flex';const close=()=>{const vd=$('#vid');if(vd)vd.pause();o.style.display='none';o.innerHTML='';if(pre)toast('开始操作：'+q.q)};$('#vgo').onclick=close;const vd=$('#vid');if(vd){vd.onended=close;vd.onerror=()=>{const t=o.querySelector('.vt');if(t)t.innerHTML+='<br><span style="color:#dc2626">视频加载失败，可直接去操作。</span>'}}}
 /* ===== 进度 ===== */
 const KEY='xlops_v1';let PG=JSON.parse(localStorage.getItem(KEY)||'null')||{done:{},wrong:{},exams:[],area:{}};
 const save=()=>{localStorage.setItem(KEY,JSON.stringify(PG));stat()};
 function stat(){const w=Object.values(PG.wrong).filter(x=>!x.m).length;$('#stat').textContent=`已做对 ${Object.keys(PG.done).length}/16 · 待巩固错题 ${w}`+(PG.exams.length?` · 最近考试 ${PG.exams[PG.exams.length-1].s} 分`:'')}
 /* ===== 判题引擎 ===== */
-function startQ(id){const q=QS[id-1];S=q.sheet?q.sheet():base();sel=[{r1:1,c1:1,r2:1,c2:1}];E={q,paths:q.paths.map(s=>({s,i:0,alive:true})),mist:0,done:false,gave:false,fail:false};curTab='开始';closeAll();$('#stab').textContent='';renderAll();renderQ()}
+function startQ(id){if((mode=='learn'||mode=='wrong')&&!localStorage.getItem('xlops_novid'))setTimeout(()=>showVideo(id,true),0);$('#qp').classList.add('col');tapA=null;selHist=[];const q=QS[id-1];S=q.sheet?q.sheet():base();sel=[{r1:1,c1:1,r2:1,c2:1}];E={q,paths:q.paths.map(s=>({s,i:0,alive:true})),mist:0,done:false,gave:false,fail:false};curTab='开始';closeAll();$('#stab').textContent='';renderAll();renderQ()}
 function act(a){if(!E||E.done)return false;const s=selStr();let selErr=null,valErr=null;const ok=[];
  for(const p of E.paths){if(!p.alive)continue;const st=p.s[p.i];if(st.c!==a.c)continue;
   if(st.need&&!st.need.includes(s)){selErr=selErr||st;continue}
@@ -156,7 +204,7 @@ function act(a){if(!E||E.done)return false;const s=selStr();let selErr=null,valE
 function rewind(){if(!E||E.done)return;E.paths.forEach(p=>{if(p.alive&&p.i>0)p.i--});renderQ(true)}
 function hintStep(){const p=E.paths.find(p=>p.alive);return p&&p.s[p.i]}
 function run(c,v){if(!act({c,v}))return false;H[c]&&H[c](v);renderAll();return true}
-function fb(cls,t){const e=$('#fb');if(!e)return;e.className=cls;e.innerHTML=t}
+function fb(cls,t){const e=$('#fb');if(!e)return;e.className=cls;e.innerHTML=t;mbar()}
 /* ===== 会话：学习/考试/错题本 ===== */
 function startSession(m,list){mode=m;clearInterval(window._ti);SS={mode:m,list:[...list],pend:[],res:[],n:0,total:list.length,t0:Date.now()};
  if(m=='exam'){SS.end=Date.now()+20*60e3;window._ti=setInterval(()=>{const r=SS.end-Date.now();const t=$('#timer');if(t)t.textContent=fmtT(r);if(r<=0)endSession()},500)}nextQ()}
@@ -170,10 +218,10 @@ function finishQ(gave){const id=E.q.id,ok=!E.fail&&!E.gave&&E.mist==0;
  else{if(ok){PG.done[id]=1;if(PG.wrong[id]&&(SS.mode=='wrong'||SS.cur.re))PG.wrong[id].m=true}
   else{PG.wrong[id]={cnt:((PG.wrong[id]||{}).cnt||0)+1,m:false};SS.pend.push({id,w:3})}save()}
  E.done=true;renderQ();showAns(ok)}
-function showAns(ok){const a=$('#ans');if(!a)return;a.style.display='block';a.innerHTML=`<b>${ok?'🎉 一次做对！':(SS.mode=='exam'?'本题已记录':'已加入错题本，过 3 题后会再考你')}</b><br><b>📘 标准答案（讲义原文）：</b>${E.q.a}${E.q.note?`<br><b>📝 注：</b>${E.q.note}`:''}`;$('#nextb').disabled=false;$('#nextb').textContent=SS.mode=='exam'?'下一题 →':'下一题 →'}
-function endSession(){clearInterval(window._ti);if(SS.mode=='exam'){if(SS.cur&&E&&!E.done)recordExam(0);SS.list.forEach(id=>SS.res.push({id,sc:0,mist:'-',skip:1}));SS.list.forEach(id=>{PG.wrong[id]={cnt:((PG.wrong[id]||{}).cnt||0)+1,m:false}});SS.list=[];
+function showAns(ok){const a=$('#ans');if(!a)return;$('#qp').classList.remove('col');a.style.display='block';a.innerHTML=`<b>${ok?'🎉 一次做对！':(SS.mode=='exam'?'本题已记录':'已加入错题本，过 3 题后会再考你')}</b><br><b>📘 标准答案（讲义原文）：</b>${E.q.a}${E.q.note?`<br><b>📝 注：</b>${E.q.note}`:''}<br><button class="btn gh" id="vre">🎬 看视频（重看讲解）</button>`;$('#vre').onclick=()=>showVideo(E?E.q.id:SS.cur.id,false);$('#nextb').disabled=false;$('#nextb').textContent='下一题 →';mbar()}
+function endSession(){clearInterval(window._ti);setTimeout(mbar,0);if(SS.mode=='exam'){if(SS.cur&&E&&!E.done)recordExam(0);SS.list.forEach(id=>SS.res.push({id,sc:0,mist:'-',skip:1}));SS.list.forEach(id=>{PG.wrong[id]={cnt:((PG.wrong[id]||{}).cnt||0)+1,m:false}});SS.list=[];
  const tot=Math.round(SS.res.reduce((a,b)=>a+b.sc,0)/(SS.total*10)*100);PG.exams.push({s:tot,t:Date.now()});save();E=null;
- $('#qp').innerHTML=`<h2 style="margin:0">考试结束</h2><div class="big">${tot} 分</div><p class="tip">用时 ${fmtT(Date.now()-SS.t0)}；满分 100（每题 10 分：零失误 10 分，1–2 次失误 5 分，3 次失误/未做 0 分）</p><table class="t">${SS.res.map(r=>`<tr><td>第${r.id}题</td><td>${QS[r.id-1].q}</td><td><b style="color:${r.sc==10?'#16a34a':r.sc?'#a16207':'#dc2626'}">${r.sc}</b></td></tr>`).join('')}</table><p>失分题已加入错题本。</p><button class="btn" id="again">再考一次</button> <button class="btn gh" onclick="setMode('wrong')">去错题本</button>`;$('#again').onclick=()=>setMode('exam');return}
+ $('#qp').innerHTML=`<h2 style="margin:0">考试结束</h2><div class="big">${tot} 分</div><p class="tip">用时 ${fmtT(Date.now()-SS.t0)}；满分 100（每题 10 分：零失误 10 分，1–2 次失误 5 分，3 次失误/未做 0 分）</p><table class="t">${SS.res.map(r=>`<tr><td>第${r.id}题</td><td>${QS[r.id-1].q}</td><td><b style="color:${r.sc==10?'#16a34a':r.sc?'#a16207':'#dc2626'}">${r.sc}</b></td><td><button class="btn gh" onclick="showVideo(${r.id},false)">🎬 看视频</button></td></tr>`).join('')}</table><p>失分题已加入错题本。</p><button class="btn" id="again">再考一次</button> <button class="btn gh" onclick="setMode('wrong')">去错题本</button>`;$('#again').onclick=()=>setMode('exam');return}
  $('#qp').innerHTML=`<h3>✅ 本轮完成</h3><p>${SS.mode=='wrong'?'错题都已重做正确！':'16 道题都练完了，错的题也已重做正确。'}</p><button class="btn" onclick="setMode('exam')">去考试</button> <button class="btn gh" onclick="setMode('learn')">再练一遍</button>`;E=null}
 /* ===== 左侧题目面板 ===== */
 function renderQ(partial){if(!E)return;const q=E.q,learn=mode!='exam';
@@ -181,11 +229,12 @@ function renderQ(partial){if(!E)return;const q=E.q,learn=mode!='exam';
  const qlist=learn&&SS.mode=='learn'?`<div id="qlist">${QS.map(x=>`<button class="${PG.done[x.id]?'d':''} ${PG.wrong[x.id]&&!PG.wrong[x.id].m?'w':''} ${x.id==q.id?'c':''}" data-j="${x.id}">${x.id}</button>`).join('')}</div><div class="tip" style="font-size:12px;color:#888">绿=做对过 红=待巩固 · 点数字可跳题</div>`:'';
  $('#qp').innerHTML=`<div style="display:flex;justify-content:space-between;align-items:center"><span><span class="tag">${{learn:'学习模式',exam:'考试模式',wrong:'错题本重练'}[mode]}</span>${SS.cur&&SS.cur.re?'<span class="tag r">🔁 错题重考</span>':''}</span>${mode=='exam'?`<span id="timer">${fmtT(SS.end-Date.now())}</span>`:''}</div>
  <div style="font-size:12px;color:#888;margin-top:6px">${mode=='exam'?`第 ${SS.n} / ${SS.total} 题`:`第 ${q.id} 题`} · <span class="tag y">${q.k}</span></div>
- <div id="qtext">${q.id}. ${q.q}</div>
+ <div id="qtext">${q.id}. ${q.q} <button class="btn gh mob" id="qtog" style="min-height:32px;padding:2px 10px;font-size:13px">详情</button></div><div class="cx">
  ${learn?`<div style="font-size:13px;font-weight:600">操作步骤提示</div><ul class="steps" id="steps">${stepsHTML()}</ul>`:'<div class="tip" style="font-size:12px;color:#888">考试模式：无提示，按真实 Excel 操作。失误 3 次本题判 0 分。</div>'}
  <div id="fb"></div>
- <div><button class="btn gh" id="redo">↺ 重做本题</button>${learn?'<button class="btn gh" id="give">看答案</button>':''}<button class="btn" id="nextb" ${mode=='exam'?'':'disabled'}>${mode=='exam'?'跳过 →':'下一题 →'}</button>${mode=='exam'?'<button class="btn" style="background:#b91c1c" id="sub">交卷</button>':''}</div>
- <div id="ans"></div>${qlist}<div style="font-size:12px;color:#888;margin-top:10px;line-height:1.6">操作说明：拖动鼠标选区，Ctrl+拖动可多选；右键单元格/行号/列标/工作表标签弹出菜单；选中单元格后直接键入内容按 Enter。</div>`;
+ <div><button class="btn gh" id="redo">↺ 重做本题</button><button class="btn gh" id="vwatch">🎬 看视频</button>${learn?'<button class="btn gh" id="give">看答案</button>':''}<button class="btn" id="nextb" ${mode=='exam'?'':'disabled'}>${mode=='exam'?'跳过 →':'下一题 →'}</button>${mode=='exam'?'<button class="btn" style="background:#b91c1c" id="sub">交卷</button>':''}</div>
+ <div id="ans"></div>${qlist}<div style="font-size:12px;color:#888;margin-top:10px;line-height:1.6">操作说明：拖动鼠标选区，Ctrl+拖动可多选；右键单元格/行号/列标/工作表标签弹出菜单；选中单元格后直接键入内容按 Enter。<br>📱 手机：选「范围」后点起点再点终点（或直接拖动）；「+多选」相当于按住 Ctrl；长按或点「⋯ 右键菜单」代替右键。</div></div>`;
+ $('#vwatch').onclick=()=>showVideo(q.id,false);mbar();$('#qtog').onclick=()=>$('#qp').classList.toggle('col');
  $('#redo').onclick=()=>{if(mode=='exam'&&E.done)return;const m=E.mist;startQ(q.id);E.mist=m};
  if($('#give'))$('#give').onclick=()=>{if(E.done)return;E.gave=true;E.done=true;finishQ(true)};
  $('#nextb').onclick=()=>{if(mode!='exam'&&!E.done)return;nextQ()};
@@ -228,12 +277,12 @@ const MENUS={fillColor:()=>[{hd:'标准色'},...cl('fillColor')],fontColor:()=>c
 const tsw=(i,d)=>['#9bc2e6','#f4b084','#c9c9c9','#ffd966','#8ea9db','#a9d08e'][(i-1)%6]+(d?'':'');
 const acc=(i,p)=>({1:['#d9e1f2','#b4c6e7','#8ea9db'],2:['#fce4d6','#f8cbad','#f4b084'],3:['#ededed','#dbdbdb','#c9c9c9'],4:['#fff2cc','#ffe699','#ffd966'],5:['#ddebf7','#bdd7ee','#9bc2e6'],6:['#e2efda','#c6e0b4','#a9d08e']})[i][p/20-1];
 function closeAll(lv=0){document.querySelectorAll('.menu').forEach(e=>{if(+e.dataset.l>=lv)e.remove()})}
-function menu(x0,y0,items,lv=0,grid){closeAll(lv);const mm=document.createElement('div');mm.className='menu'+(grid?' grid':'');mm.dataset.l=lv;
+function menu(x0,y0,items,lv=0,grid){closeAll(lv);const mm=document.createElement('div');mm.className='menu'+(grid?' grid':'');mm.dataset.l=lv;mm.style.zIndex=100+lv;if(lv>0&&MOB()){const bk=document.createElement('div');bk.className='mi';bk.textContent='‹ 返回';bk.style.color='#217346';bk.onclick=()=>closeAll(lv);mm.appendChild(bk)}
  items.forEach(it=>{const d=document.createElement('div');if(it.sep){d.className='sep'}else if(it.hd){d.className='hd';d.textContent=it.hd}else{d.className='mi';d.innerHTML=(it.sw!==undefined?`<i style="background:${it.sw}"></i>`:'')+(grid&&it.g?'':esc(it.t))+(it.sub?' <span style="margin-left:auto">▸</span>':'');d.title=it.t;d.dataset.t=it.t;
   const open=()=>{const r=d.getBoundingClientRect();menu(r.right,r.top,it.sub,lv+1)};
-  if(it.sub){d.onmouseenter=open;d.onclick=open}else{d.onmouseenter=()=>closeAll(lv+1);d.onclick=()=>{closeAll();it.fn?it.fn():run(it.cmd,it.v)}}}mm.appendChild(d)});
+  const HV=matchMedia('(hover:hover)').matches&&!MOB();if(it.sub){if(HV)d.onmouseenter=open;d.onclick=e=>{e.stopPropagation();open()}}else{if(HV)d.onmouseenter=()=>closeAll(lv+1);d.onclick=()=>{closeAll();it.fn?it.fn():run(it.cmd,it.v)}}}mm.appendChild(d)});
  document.body.appendChild(mm);const r=mm.getBoundingClientRect();mm.style.left=Math.max(0,Math.min(x0,innerWidth-r.width-4))+'px';mm.style.top=Math.max(0,Math.min(y0,innerHeight-r.height-4))+'px'}
-document.addEventListener('mousedown',e=>{if(!e.target.closest('.menu')&&!e.target.closest('[data-menu]'))closeAll()});
+let lpAt=0,lpUp=0;const lpG=()=>lpAt&&lpUp>=lpAt&&Date.now()-lpUp<500;document.addEventListener('pointerup',()=>{if(lpAt&&lpUp<lpAt)lpUp=Date.now()},true);document.addEventListener('click',e=>{if(lpG()){lpAt=0;e.stopPropagation();e.preventDefault()}},true);document.addEventListener('mousedown',e=>{if(lpG())return;if(!e.target.closest('.menu')&&!e.target.closest('[data-menu]')&&!e.target.closest('.farrow')&&!e.target.closest('#ctxb'))closeAll()});
 /* ===== 对话框 ===== */
 let dlgFree=false;
 function dlg(title,html,onok,free){dlgFree=!!free;const o=$('#ov');o.innerHTML=`<div class="dlg"><div class="dt">${title}<span id="dx">×</span></div><div class="db">${html}</div><div class="df"><button id="dok">确定</button><button id="dcc">取消</button></div></div>`;o.style.display='flex';
@@ -308,7 +357,7 @@ function renderGrid(){let h='<colgroup><col style="width:36px">';for(let c=1;c<=
    let inner=esc(v);const sp=S.sparks[r+','+c];if(sp){const d=[4,5,6].map(cc=>+val(sp.src,cc)||0),mx=Math.max(...d,1);inner=`<svg width="100%" height="18" viewBox="0 0 60 18" preserveAspectRatio="none">${d.map((q,i)=>`<rect x="${6+i*18}" y="${18-q/mx*16}" width="12" height="${q/mx*16}" fill="${sp.color}"/>`).join('')}</svg>`}
    const fa=S.filter&&r==S.filter.a.r1&&c>=S.filter.a.c1&&c<=S.filter.a.c2?`<span class="farrow ${S.filter.conds[c]?'on':''}" data-fc="${c}">${S.filter.conds[c]?'⧩':'▼'}</span>`:'';
    h+=`<td data-r="${r}" data-c="${c}"${m?` colspan="${m.c2-m.c1+1}"`:''} class="${inSel(r,c)?'sel':''} ${sel[sel.length-1].r1==r&&sel[sel.length-1].c1==c?'act':''}" style="${st}">${inner}${fa}</td>`}h+='</tr>'}
- $('#grid').innerHTML=h;if(!$('#rn'))$('#stab').textContent=S.name;const a=sel[sel.length-1];$('#nb').textContent=AD(Math.min(a.r1,a.r2),Math.min(a.c1,a.c2));const cx=S.cells[Math.min(a.r1,a.r2)+','+Math.min(a.c1,a.c2)];if(document.activeElement!=$('#fxi'))$('#fxi').value=cx?(cx.f||cx.v):'';
+ $('#grid').innerHTML=h;if(!$('#rn'))$('#stab').textContent=S.name;$('#chip').textContent='已选 '+selStr()+(tapA?' · 再点终点':'');const a=sel[sel.length-1];$('#nb').textContent=AD(Math.min(a.r1,a.r2),Math.min(a.c1,a.c2));const cx=S.cells[Math.min(a.r1,a.r2)+','+Math.min(a.c1,a.c2)];if(document.activeElement!=$('#fxi'))$('#fxi').value=cx?(cx.f||cx.v):'';
  const la=norm(sel[sel.length-1]);const td=document.querySelector(`#grid td[data-r="${la.r2}"][data-c="${la.c2}"]`);const fh=$('#fh');if(td&&!la.row&&!la.col){const gw=$('#gw').getBoundingClientRect(),tr=td.getBoundingClientRect();fh.style.display='block';fh.style.left=(tr.right-gw.left+$('#gw').scrollLeft-4)+'px';fh.style.top=(tr.bottom-gw.top+$('#gw').scrollTop-4)+'px'}else fh.style.display='none';
  renderChart()}
 function renderChart(){const ch=$('#chart');if(!S.chart){ch.style.display='none';return}ch.style.display='block';ch.classList.toggle('on',!!S.chart.sel);const{labels,vals,type,lab}=S.chart;const tot=vals.reduce((a,b)=>a+b,0)||1;const pal=['#4472c4','#ed7d31','#a5a5a5','#ffc000','#5b9bd5','#70ad47'];
@@ -318,18 +367,45 @@ function renderChart(){const ch=$('#chart');if(!S.chart){ch.style.display='none'
   top+=`<path d="M${cx},${cy}L${p(a0)}A${rx},${ry} 0 ${lg} 1 ${p(a1)}Z" fill="${pal[i%6]}" stroke="#fff"/>`;
   if(lab&&lab!='无'){const am=(a0+a1)/2,k=lab=='数据标签外'?1.15:lab=='居中'?0.6:0.8;lb+=`<text x="${cx+rx*k*Math.cos(am)}" y="${cy+ry*k*Math.sin(am)+4}" font-size="11" text-anchor="middle" fill="${lab=='数据标签外'?'#333':'#fff'}" font-weight="700">${v}</text>`}a0=a1});
  ch.innerHTML=`<svg width="330" height="240"><text x="165" y="20" text-anchor="middle" font-size="14">总成绩</text>${s}${top}${lb}${labels.map((l,i)=>`<rect x="245" y="${50+i*20}" width="10" height="10" fill="${pal[i%6]}"/><text x="260" y="${59+i*20}" font-size="11">${esc(l)}</text>`).join('')}</svg>`}
-function renderAll(){renderGrid();renderRibbon()}
-$('#chart').onmousedown=e=>{e.stopPropagation();S.chart.sel=true;curTab='图表设计';renderAll()};
+function renderAll(){renderGrid();renderRibbon();mbar()}
+$('#chart').onpointerdown=e=>{e.stopPropagation();S.chart.sel=true;curTab='图表设计';renderAll()};
 /* ===== 鼠标：选区 / 填充柄 / 右键 ===== */
 let drag=null,fdrag=null;
 const cellOf=e=>{const td=e.target.closest('#grid td');return td?{r:+td.dataset.r,c:+td.dataset.c}:null};
-$('#grid').addEventListener('mousedown',e=>{if(e.button!==0)return;if(e.target.classList.contains('farrow')){e.stopPropagation();const r=e.target.getBoundingClientRect();filterPop(+e.target.dataset.fc,r.left,r.bottom);return}
- if(S.chart)S.chart.sel=false;const th=e.target.closest('th');let a;
- if(th&&th.dataset.row){const r=+th.dataset.row;a={r1:r,r2:r,c1:1,c2:NC,row:true}}else if(th&&th.dataset.col){const c=+th.dataset.col;a={r1:1,r2:NR,c1:c,c2:c,col:true}}else{const p=cellOf(e);if(!p)return;a={r1:p.r,c1:p.c,r2:p.r,c2:p.c};drag=true}
- sel=e.ctrlKey||e.metaKey?[...sel,a]:[a];renderAll()});
-$('#grid').addEventListener('mouseover',e=>{const p=cellOf(e);if(!p)return;if(drag){const a=sel[sel.length-1];a.r2=p.r;a.c2=p.c;renderGrid()}if(fdrag){fdrag.r=Math.max(fdrag.r0,p.r);document.querySelectorAll('#grid td').forEach(t=>t.style.outline=+t.dataset.c==fdrag.c&&+t.dataset.r>fdrag.r0&&+t.dataset.r<=fdrag.r?'1px dashed #217346':'')}});
-document.addEventListener('mouseup',e=>{if(drag){drag=null;renderAll()}if(fdrag){const f=fdrag;fdrag=null;if(f.r>f.r0)run('fill',`${L(f.c)}${f.r0}:${L(f.c)}${f.r}`);else renderGrid()}});
-$('#fh').addEventListener('mousedown',e=>{e.stopPropagation();e.preventDefault();const a=norm(sel[sel.length-1]);fdrag={c:a.c2,r0:a.r2,r:a.r2}});
+const MOB=()=>matchMedia('(max-width:760px)').matches;
+let smode='single',tapA=null,selHist=[],lp=null,lastCtx=null,moved=false;
+const tdAt=(x,y)=>{const el=document.elementFromPoint(x,y);const td=el&&el.closest&&el.closest('#grid td');return td?{r:+td.dataset.r,c:+td.dataset.c}:null};
+const pushSel=()=>{selHist.push(JSON.stringify(sel));if(selHist.length>30)selHist.shift()};
+function setSM(m){smode=m;tapA=null;document.querySelectorAll('#selbar [data-sm]').forEach(b=>b.classList.toggle('on',b.dataset.sm==m));$('#gw').classList.toggle('tsel',m!='single');renderGrid()}
+document.querySelectorAll('#selbar [data-sm]').forEach(b=>b.onclick=()=>setSM(b.dataset.sm));
+$('#sundo').onclick=()=>{const h=selHist.pop();if(h){sel=JSON.parse(h);tapA=null;renderAll()}else toast('没有可撤销的选区')};
+$('#sclr').onclick=()=>{pushSel();sel=[{r1:1,c1:1,r2:1,c2:1}];tapA=null;renderAll()};
+let zf=1;$('#zo').onclick=()=>{zf=Math.max(.6,zf-.1);$('#grid').style.setProperty('--z',zf);renderGrid()};$('#zi').onclick=()=>{zf=Math.min(1.6,zf+.1);$('#grid').style.setProperty('--z',zf);renderGrid()};
+function fireCtx(el,x,y){el.dispatchEvent(new MouseEvent('contextmenu',{bubbles:true,cancelable:true,clientX:x,clientY:y}))}
+$('#ctxb').onclick=()=>{let el;if(lastCtx&&lastCtx.isConnected)el=lastCtx;else{const a=sel[sel.length-1];el=a.row?document.querySelector(`#grid th[data-row="${a.r1}"]`):a.col?document.querySelector(`#grid th[data-col="${a.c1}"]`):document.querySelector(`#grid td[data-r="${Math.min(a.r1,a.r2)}"][data-c="${Math.min(a.c1,a.c2)}"]`)}if(!el)return;const r=el.getBoundingClientRect();fireCtx(el,r.left+r.width/2,r.top+r.height/2)};
+/* 长按 = 右键 */
+document.addEventListener('pointerdown',e=>{if(e.pointerType=='mouse')return;const t=e.target.closest&&e.target.closest('#grid td,#grid th,#stab');if(!t)return;clearTimeout(lp&&lp.t);const x=e.clientX,y=e.clientY;lp={x,y,t:setTimeout(()=>{lp=null;drag=null;fdrag=null;lpAt=Date.now();const el=document.elementFromPoint(x,y)||t;fireCtx(el.closest('#grid td,#grid th,#stab')||el,x,y);if(navigator.vibrate)navigator.vibrate(20)},550)}},true);
+$('#stab').addEventListener('pointerdown',()=>{lastCtx=$('#stab')});
+$('#grid').addEventListener('click',e=>{if(e.target.classList.contains('farrow')){const r=e.target.getBoundingClientRect();filterPop(+e.target.dataset.fc,r.left,r.bottom)}});
+$('#grid').addEventListener('pointerdown',e=>{if(e.pointerType=='mouse'&&e.button!==0)return;if(e.target.classList.contains('farrow')){e.stopPropagation();return}
+ if(e.target.hasPointerCapture&&e.target.hasPointerCapture(e.pointerId))e.target.releasePointerCapture(e.pointerId);
+ lastCtx=null;if(S.chart)S.chart.sel=false;const th=e.target.closest('th');let a;const touch=e.pointerType!='mouse';const multi=e.ctrlKey||e.metaKey||smode=='multi';pushSel();moved=false;
+ if(th&&th.dataset.row){const r=+th.dataset.row;a={r1:r,r2:r,c1:1,c2:NC,row:true};tapA=null}else if(th&&th.dataset.col){const c=+th.dataset.col;a={r1:1,r2:NR,c1:c,c2:c,col:true};tapA=null}else{const p=cellOf(e);if(!p)return;
+  if(touch&&smode!='single'&&tapA){const la=sel[sel.length-1];la.r2=p.r;la.c2=p.c;tapA=null;selHist.pop();renderAll();return}
+  a={r1:p.r,c1:p.c,r2:p.r,c2:p.c};if(!touch||smode!='single')drag=true;if(touch&&smode!='single')tapA=p}
+ sel=multi&&!(sel.length==1&&sel[0].r1==1&&sel[0].c1==1&&sel[0].r2==1&&sel[0].c2==1&&smode=='multi'&&!e.ctrlKey)?[...sel,a]:[a];if(multi&&sel.length>1&&smode=='multi'&&!e.ctrlKey&&false)sel=[a];renderAll()});
+document.addEventListener('pointermove',e=>{if(lp&&Math.hypot(e.clientX-lp.x,e.clientY-lp.y)>10){clearTimeout(lp.t);lp=null}
+ if(!drag&&!fdrag)return;const p=tdAt(e.clientX,e.clientY);if(!p)return;
+ if(drag){const a=sel[sel.length-1];if(a.r2!=p.r||a.c2!=p.c){a.r2=p.r;a.c2=p.c;moved=true;if(tapA&&(tapA.r!=p.r||tapA.c!=p.c))tapA=null;renderGrid()}}
+ if(fdrag){fdrag.r=Math.max(fdrag.r0,p.r);document.querySelectorAll('#grid td').forEach(t=>t.style.outline=+t.dataset.c==fdrag.c&&+t.dataset.r>fdrag.r0&&+t.dataset.r<=fdrag.r?'1px dashed #217346':'')}});
+const pend=e=>{if(lp){clearTimeout(lp.t);lp=null}if(drag){drag=null;renderAll()}if(fdrag){const f=fdrag;fdrag=null;if(f.r>f.r0)run('fill',`${L(f.c)}${f.r0}:${L(f.c)}${f.r}`);else renderGrid()}};
+document.addEventListener('pointerup',pend);document.addEventListener('pointercancel',e=>{if(lp){clearTimeout(lp.t);lp=null}if(drag){drag=null;renderAll()}if(fdrag){fdrag=null;renderGrid()}});
+$('#fh').addEventListener('pointerdown',e=>{e.stopPropagation();e.preventDefault();if(e.target.hasPointerCapture(e.pointerId))e.target.releasePointerCapture(e.pointerId);const a=norm(sel[sel.length-1]);fdrag={c:a.c2,r0:a.r2,r:a.r2}});
+/* 底部操作条（手机） */
+function mbar(){const b=$('#mbar');if(!b)return;if(!E||mode=='area'||$('#view2').style.display=='block'){b.style.display='none';return}b.style.display='';const f=$('#fb');const st=hintStep();
+ let t=f&&f.innerHTML?f.innerHTML:'';if(!E.done&&mode!='exam'&&st)t+=(t?'<br>':'')+'👉 '+st.t+(st.std?'（讲义未写，按 Excel 标准步骤）':'');if(E.done)t+=(t?'<br>':'')+'本题已结束，标准答案见上方题目卡片。';if(!t)t=mode=='exam'?'考试模式：无提示，按真实 Excel 操作。':'';
+ b.innerHTML=`<div id="mfb" class="${f&&f.innerHTML?f.className:''}">${t}</div><div class="mbb">${mode!='exam'?'<button class="btn gh" data-p="give">看答案</button>':''}<button class="btn gh" data-p="redo">↺ 重做</button><button class="btn" data-p="nextb" ${mode!='exam'&&!E.done?'disabled':''}>${mode=='exam'?(E.done?'下一题 →':'跳过 →'):'下一题 →'}</button>${mode=='exam'?'<button class="btn red" data-p="sub">交卷</button>':''}</div>`;
+ b.querySelectorAll('[data-p]').forEach(x=>x.onclick=()=>{const t=$('#'+x.dataset.p);if(t)t.click()})}
 $('#fh').addEventListener('dblclick',e=>{const a=norm(sel[sel.length-1]);let r=a.r2;while(r<NR&&val(r+1,a.c2-1)!=='')r++;if(r>a.r2)run('fill',`${L(a.c2)}${a.r2}:${L(a.c2)}${r}`)});
 $('#grid').addEventListener('contextmenu',e=>{e.preventDefault();const th=e.target.closest('th');const base=[xi('剪切'),xi('复制'),xi('粘贴选项'),{sep:1}];
  if(th&&th.dataset.row){const r=+th.dataset.row;if(!sel.some(a=>a.row&&inA(a,r,1)))sel=[{r1:r,r2:r,c1:1,c2:NC,row:true}];renderAll();menu(e.clientX,e.clientY,[...base,xi('插入'),xi('删除'),xi('清除内容'),{sep:1},{t:'设置单元格格式...',cmd:'ctx.format'},{t:'行高...',cmd:'ctx.rowh'},xi('隐藏'),xi('取消隐藏')]);return}
@@ -363,6 +439,6 @@ function aNext(){AS.pend.forEach(p=>p.w--);let k=AS.pend.findIndex(p=>p.w<=0),i,
  AS.n++;const q=AQ[i];$('#aqb').innerHTML=`<div style="font-size:12px;color:#888">第 ${AS.n} 题 ${re?'<span class="tag r">🔁 重考</span>':''}</div><h3>${q.q}</h3>${[...q.o].sort(()=>Math.random()-.5).map(o=>`<button class="opt">${o}</button>`).join('')}<div id="afb"></div>`;
  $('#aqb').querySelectorAll('.opt').forEach(bt=>bt.onclick=()=>{if($('#aqb .opt.ok'))return;const ok=bt.textContent==q.a;$('#aqb').querySelectorAll('.opt').forEach(z=>{if(z.textContent==q.a)z.classList.add('ok')});if(!ok){bt.classList.add('bad');AS.pend.push({i,w:3});PG.area[i]=(PG.area[i]||0)+1}else if(!re)AS.ok++;save();
   $('#afb').innerHTML=`<p>${ok?'✅ 正确':'❌ 错误，3 题后再考'}</p><button class="btn" id="an">下一题 →</button>`;$('#an').onclick=aNext})}
-stat();setMode('learn');
+stat();setMode('learn');if('serviceWorker'in navigator&&location.protocol=='https:')navigator.serviceWorker.register('sw.js').catch(()=>{});
 window.__xl={get E(){return E},QS,setMode};
 </script></body></html>
