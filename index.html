@@ -1,0 +1,368 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Excel 操作题 · 互动练习与考试（第4章）</title>
+<style>
+:root{--g:#217346;--g2:#185c37;--bd:#d4d4d4;--ok:#16a34a;--bad:#dc2626}
+*{box-sizing:border-box}body{margin:0;font-family:"Microsoft YaHei","PingFang SC",-apple-system,sans-serif;background:#eef1f4;color:#222;font-size:14px}
+header{background:var(--g);color:#fff;display:flex;align-items:center;gap:10px;padding:8px 16px;flex-wrap:wrap}
+header b{font-size:17px}header nav{display:flex;gap:4px;flex-wrap:wrap}
+.mt{border:0;background:transparent;color:#dfe;padding:7px 13px;border-radius:6px;cursor:pointer;font-size:14px}.mt.on{background:#fff;color:var(--g);font-weight:700}
+#stat{margin-left:auto;font-size:13px;opacity:.9}
+#wrap{display:grid;grid-template-columns:340px 1fr;gap:12px;padding:12px;max-width:1500px;margin:auto}
+@media(max-width:980px){#wrap{grid-template-columns:1fr}}
+.card{background:#fff;border-radius:10px;padding:14px;box-shadow:0 1px 4px rgba(0,0,0,.08)}
+#qtext{font-size:17px;font-weight:700;line-height:1.6;margin:8px 0}
+.tag{display:inline-block;background:#e7f3ec;color:var(--g);padding:2px 8px;border-radius:99px;font-size:12px;margin-right:4px}
+.tag.r{background:#fde8e8;color:var(--bad)}.tag.y{background:#fff4d6;color:#a16207}
+.steps{margin:8px 0;padding-left:0;list-style:none}.steps li{padding:6px 8px;border-radius:6px;margin:3px 0;font-size:13px;color:#666;background:#f7f7f7}
+.steps li.cur{background:#fff4d6;color:#222;font-weight:600;border-left:3px solid #f59e0b}.steps li.ok{color:var(--ok);background:#effaf3}
+.std{font-size:11px;color:#a16207}
+#fb{min-height:22px;margin:8px 0;padding:8px;border-radius:6px;font-size:13px;line-height:1.6;display:none}#fb.ok{display:block;background:#effaf3;color:#14532d}#fb.bad{display:block;background:#fdecec;color:#7f1d1d}
+.btn{border:0;background:var(--g);color:#fff;padding:8px 14px;border-radius:6px;cursor:pointer;font-size:14px;margin:3px 3px 0 0}.btn.gh{background:#e7f3ec;color:var(--g)}.btn:disabled{opacity:.4}
+#ans{display:none;margin-top:10px;border:1px solid #cfe7d8;background:#f6fbf8;border-radius:8px;padding:10px;line-height:1.7;font-size:13px}
+#qlist{display:flex;flex-wrap:wrap;gap:4px;margin-top:10px}#qlist button{width:34px;height:30px;border:1px solid #ccc;background:#fff;border-radius:5px;cursor:pointer}
+#qlist button.d{background:#dcfce7;border-color:#86efac}#qlist button.w{background:#fee2e2;border-color:#fca5a5}#qlist button.c{outline:2px solid var(--g)}
+#timer{font-weight:700;color:var(--bad);font-size:16px}
+/* excel */
+#xl{background:#fff;border-radius:8px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.12);user-select:none;position:relative}
+.tabs{display:flex;background:var(--g);padding:0 6px;flex-wrap:wrap}.tabs span{color:#fff;padding:6px 12px;cursor:pointer;font-size:13px}.tabs span.on{background:#f3f3f3;color:var(--g);border-radius:4px 4px 0 0}
+.tabs span.ctx{color:#ffe08a}.tabs span.ctx.on{color:#b45309}
+#ribbon{background:#f3f3f3;display:flex;min-height:84px;border-bottom:1px solid var(--bd);overflow-x:auto}
+.grp{display:flex;flex-direction:column;border-right:1px solid #dcdcdc;padding:4px 6px 2px}.grp .bs{display:flex;flex-wrap:wrap;gap:2px;max-width:230px;flex:1;align-content:flex-start}
+.grp .gl{font-size:11px;color:#777;text-align:center;margin-top:2px}
+.rb{border:1px solid transparent;background:none;padding:4px 7px;font-size:12px;cursor:pointer;border-radius:3px;white-space:nowrap}.rb:hover{background:#dbe9df;border-color:#b6d3bf}
+.rb.dd:after{content:" ▾";font-size:10px;color:#666}
+.fx{display:flex;border-bottom:1px solid var(--bd);font-size:13px}.fx #nb{width:90px;border-right:1px solid var(--bd);padding:4px 6px}.fx i{padding:4px 8px;color:#888;border-right:1px solid var(--bd)}.fx input{flex:1;border:0;padding:4px 6px;font:inherit;outline:0}
+#gw{position:relative;overflow:auto;height:430px;background:#fff}
+#grid{border-collapse:collapse;table-layout:fixed;font-size:13px}
+#grid th{background:#f3f3f3;border:1px solid #dadada;font-weight:400;color:#555;height:22px;cursor:pointer;font-size:12px}
+#grid th.hl{background:#d3e7da;color:var(--g2)}#grid th.corner{width:36px}
+#grid td{border:1px solid #e3e3e3;height:22px;padding:0 4px;white-space:nowrap;overflow:hidden;cursor:cell;position:relative}
+#grid td.sel{background-color:rgba(33,115,70,.13)!important;box-shadow:inset 0 0 0 9999px rgba(33,115,70,.08)}#grid td.act{outline:2px solid var(--g);outline-offset:-2px}
+.farrow{position:absolute;right:1px;top:3px;width:15px;height:15px;border:1px solid #aaa;background:#fff;font-size:9px;line-height:13px;text-align:center;cursor:pointer;color:#333}
+.farrow.on{color:#1d4ed8;border-color:#1d4ed8}
+#fh{position:absolute;width:7px;height:7px;background:var(--g);border:1px solid #fff;cursor:crosshair;z-index:4}
+.sheets{display:flex;align-items:center;gap:2px;background:#f3f3f3;border-top:1px solid var(--bd);padding:3px 8px;font-size:13px}
+.sheets span{padding:3px 14px;cursor:pointer}.sheets span.on{background:#fff;color:var(--g);border-bottom:2px solid var(--g);font-weight:600}
+.sheets input{width:90px;font:inherit}
+.menu{position:fixed;background:#fff;border:1px solid #c6c6c6;box-shadow:2px 3px 10px rgba(0,0,0,.2);z-index:100;min-width:150px;padding:3px 0;font-size:13px;max-height:80vh;overflow:auto}
+.menu .mi{padding:5px 22px 5px 12px;cursor:pointer;display:flex;align-items:center;gap:6px;white-space:nowrap}.menu .mi:hover{background:#e3efe7}
+.menu .sep{border-top:1px solid #e5e5e5;margin:3px 0}.menu .mi i{display:inline-block;width:14px;height:14px;border:1px solid #999}
+.menu .hd{padding:4px 10px;font-size:12px;color:#888;background:#f6f6f6}
+.menu.grid{display:grid;grid-template-columns:repeat(7,auto);max-width:520px}.menu.grid .hd{grid-column:1/-1}.menu.grid .mi{padding:4px}.menu.grid .mi i{width:44px;height:30px;border:1px solid #bbb}
+#ov{position:fixed;inset:0;background:rgba(0,0,0,.15);display:none;align-items:center;justify-content:center;z-index:90}
+.dlg{background:#fff;border:1px solid #888;box-shadow:0 6px 30px rgba(0,0,0,.3);min-width:380px;max-width:94vw;font-size:13px}
+.dt{background:#fff;padding:8px 12px;border-bottom:1px solid #ddd;font-weight:600;display:flex;justify-content:space-between}.dt span{cursor:pointer}
+.db{padding:12px 14px;line-height:2}.db select,.db input[type=text]{font:inherit;padding:2px 4px;min-width:120px}
+.df{padding:8px 12px;text-align:right;border-top:1px solid #eee}.df button{min-width:70px;margin-left:6px;padding:4px 10px;cursor:pointer}
+.dtabs{display:flex;border-bottom:1px solid #ccc;margin-bottom:8px}.dtabs span{padding:3px 10px;cursor:pointer}.dtabs span.on{border:1px solid #ccc;border-bottom:1px solid #fff;margin-bottom:-1px;background:#fff}
+.sw{display:inline-block;width:22px;height:22px;border:1px solid #999;margin:2px;cursor:pointer;vertical-align:middle}.sw.on{outline:2px solid #000}
+.srow{display:flex;gap:8px;align-items:center}
+#chart{position:absolute;left:560px;top:30px;width:330px;height:240px;background:#fff;border:1px solid #bbb;cursor:pointer;z-index:3}#chart.on{outline:2px solid var(--g)}
+#toast{position:fixed;left:50%;bottom:30px;transform:translateX(-50%);background:#222;color:#fff;padding:8px 16px;border-radius:6px;opacity:0;transition:.3s;z-index:200;pointer-events:none}#toast.s{opacity:.92}
+#view2{display:none;max-width:900px;margin:12px auto;padding:0 12px}
+table.t{border-collapse:collapse;width:100%}table.t td,table.t th{border-bottom:1px solid #eee;padding:7px;text-align:left;vertical-align:top}
+.opt{display:block;width:100%;text-align:left;padding:10px;margin:6px 0;border:2px solid #e2e2e2;background:#fff;border-radius:8px;cursor:pointer;font-size:14px}.opt.ok{border-color:var(--ok);background:#effaf3}.opt.bad{border-color:var(--bad);background:#fdecec}
+.big{font-size:48px;font-weight:800;color:var(--g)}
+</style></head><body>
+<header><b>📊 Excel 操作题 · 互动练习与考试</b><nav><button class="mt" data-m="learn">学习模式</button><button class="mt" data-m="exam">考试模式</button><button class="mt" data-m="wrong">错题本</button><button class="mt" data-m="area">选区总结</button></nav><span id="stat"></span></header>
+<div id="wrap">
+<div><div class="card" id="qp"></div></div>
+<div id="xl">
+ <div class="tabs" id="tabs"></div><div id="ribbon"></div>
+ <div class="fx"><div id="nb">A1</div><i>fx</i><input id="fxi" placeholder="在此输入内容或公式，按 Enter 确认"></div>
+ <div id="gw"><table id="grid"></table><div id="fh"></div><div id="chart" style="display:none"></div></div>
+ <div class="sheets"><span>◀ ▶</span><span class="on" id="stab">Sheet1</span><span style="color:#999">⊕</span></div>
+</div></div>
+<div id="view2"></div>
+<div id="ov"></div><div id="toast"></div>
+<script>
+/* ===== 基础 ===== */
+const COLS='ABCDEFGHIJ'.split(''),NC=10,NR=16;const L=c=>COLS[c-1],AD=(r,c)=>L(c)+r;
+const $=s=>document.querySelector(s);const esc=s=>String(s).replace(/</g,'&lt;');
+function toast(t){const e=$('#toast');e.textContent=t;e.classList.add('s');clearTimeout(e._t);e._t=setTimeout(()=>e.classList.remove('s'),1600)}
+const HDR=['学号','姓名','性别','语文成绩','数学成绩','英语成绩','总成绩','平均分'];
+const ROWS=[[1001,'张伟','男',78,45,66],[1002,'李娜','女',52,88,71],[1003,'王强','男',90,67,58],[1004,'刘洋','女',65,59,91],[1005,'陈静','女',30,28,35],[1006,'赵磊','男',84,76,80]];
+const COLORS=[['无填充',''],['白色','#ffffff'],['黑色','#000000'],['灰色','#a6a6a6'],['红色','#ff0000'],['橙色','#ffc000'],['黄色','#ffff00'],['浅绿','#92d050'],['绿色','#00b050'],['浅蓝','#00b0f0'],['蓝色','#0070c0'],['深蓝','#002060'],['紫色','#7030a0']];
+const CMAP=Object.fromEntries(COLORS);
+let S,sel,act0,E=null,SS=null,mode='learn',curTab='开始';
+function base(o={}){const s={name:'Sheet1',cells:{},merges:[],rowH:{},colW:{},cf:[],table:null,filter:null,dv:[],chart:null,sparks:{}};
+ HDR.forEach((h,i)=>s.cells['1,'+(i+1)]={v:h});
+ ROWS.forEach((r,i)=>{const R=i+2;r.forEach((v,j)=>s.cells[R+','+(j+1)]={v});const t=r[3]+r[4]+r[5];s.cells[R+',7']=o.noG?{v:''}:{v:t};s.cells[R+',8']={v:Math.round(t/3*10)/10}});
+ if(o.g1)s.cells['1,7']={v:o.g1};return s}
+const C=(r,c)=>S.cells[r+','+c]||(S.cells[r+','+c]={v:''});
+function val(r,c){const x=S.cells[r+','+c];if(!x)return '';if(x.f){const m=x.f.toUpperCase().match(/^=SUM\(([A-J])(\d+):([A-J])(\d+)\)$/);if(!m)return '#NAME?';let s=0;for(let rr=+m[2];rr<=+m[4];rr++)for(let cc=COLS.indexOf(m[1])+1;cc<=COLS.indexOf(m[3])+1;cc++){const v=val(rr,cc);if(typeof v=='number')s+=v}return s}return x.v}
+/* ===== 选区 ===== */
+const norm=a=>({...a,r1:Math.min(a.r1,a.r2),r2:Math.max(a.r1,a.r2),c1:Math.min(a.c1,a.c2),c2:Math.max(a.c1,a.c2)});
+function areaStr(a){a=norm(a);if(a.row)return a.r1+':'+a.r2;if(a.col)return L(a.c1)+':'+L(a.c2);return(a.r1==a.r2&&a.c1==a.c2)?AD(a.r1,a.c1):AD(a.r1,a.c1)+':'+AD(a.r2,a.c2)}
+const selStr=()=>sel.map(areaStr).join(',');
+const inA=(a,r,c)=>{a=norm(a);return r>=a.r1&&r<=a.r2&&c>=a.c1&&c<=a.c2};
+const inSel=(r,c)=>sel.some(a=>inA(a,r,c));
+const selCells=()=>{const o=[];sel.forEach(a=>{a=norm(a);for(let r=a.r1;r<=a.r2;r++)for(let c=a.c1;c<=a.c2;c++)o.push([r,c])});return o};
+/* ===== 题库（题目/答案原文来自讲义） ===== */
+const fmtChk=f=>v=>f(v);
+const QS=[
+{id:1,k:'4.2 工作表的基本操作',q:'将 Sheet1 工作表重命名为钢铁侠。',a:'在 Sheet1 工作表标签上单击右键，重命名，输入名字为钢铁侠。',note:'此方法还适用于其他工作表操作：插入、删除、移动或复制、隐藏等。也可使用开始选项卡，单元格组，插入/删除/格式命令完成操作。',
+ paths:[[{c:'ctx.rename',t:'在 Sheet1 工作表标签上单击右键 → 重命名'},{c:'renameDone',v:'钢铁侠',t:'输入名字「钢铁侠」→ 按 Enter'}]]},
+{id:2,k:'4.3 局部美化—设置单元格格式',q:'将 A1 单元格设置为黄色填充颜色。',a:'选中 A1 单元格，单击开始选项卡，字体组，填充颜色，设置为黄色。',
+ paths:[[{c:'fillColor',need:['A1'],v:'黄色',t:'选中 A1 → 开始选项卡 → 字体组 → 填充颜色 ▾ → 黄色'}],[{c:'ctx.format',need:['A1'],t:'（另一法）右键 → 设置单元格格式'},{c:'dlg.format',chk:v=>v.fill=='黄色'?0:'在「填充」选项卡选黄色',t:'填充选项卡 → 黄色 → 确定'}]]},
+{id:3,k:'4.3 局部美化—设置单元格格式',q:'将单元格区域 A1:D1 合并为一个单元格，单元格的对齐方式为居中。',a:'选中 A1:D1，单击开始选项卡，对齐方式组，设置合并后居中。',note:'设置单元格格式：①开始选项卡，字体组、对齐方式组、数字组 ②选中单元格，单击右键，设置单元格格式，在弹出的对话框中也可设置。',
+ paths:[[{c:'merge',need:['A1:D1'],t:'拖动选中 A1:D1 → 开始选项卡 → 对齐方式组 → 合并后居中'}],[{c:'ctx.format',need:['A1:D1'],t:'（另一法）右键 → 设置单元格格式'},{c:'dlg.format',chk:v=>!v.merge?'「对齐」选项卡要勾选「合并单元格」':v.halign!='居中'?'水平对齐应选「居中」':0,t:'对齐选项卡：水平对齐「居中」+ 勾选合并单元格 → 确定'}]]},
+{id:4,k:'4.3 局部美化—行高、列宽',q:'设置第一行行高为 8，B 列列宽为 10。',a:'选中第一行，单击右键，行高，设置为 8；选中 B 列，单击右键，列宽，设置为 10。',
+ paths:[[{c:'ctx.rowh',need:['1:1'],t:'单击行号「1」选中第一行 → 右键 → 行高'},{c:'dlg.rowh',chk:v=>+v==8?0:'行高应设置为 8',t:'输入 8 → 确定'},{c:'ctx.colw',need:['B:B'],t:'单击列标「B」选中 B 列 → 右键 → 列宽'},{c:'dlg.colw',chk:v=>+v==10?0:'列宽应设置为 10',t:'输入 10 → 确定'}],
+ [{c:'ctx.colw',need:['B:B'],t:'先做列宽也可以'},{c:'dlg.colw',chk:v=>+v==10?0:'列宽应设置为 10',t:'输入 10'},{c:'ctx.rowh',need:['1:1'],t:'选中第一行 → 右键 → 行高'},{c:'dlg.rowh',chk:v=>+v==8?0:'行高应设置为 8',t:'输入 8'}]]},
+{id:5,k:'4.3 套用表格格式',q:'将表格数据区域设置套用表格格式为：表样式浅色 9。',a:'选中 A1:H7，单击开始选项卡，样式组，套用表格格式，设置为表样式浅色 9。',
+ paths:[[{c:'tblStyle',need:['A1:H7'],v:'表样式浅色 9',t:'选中 A1:H7 → 开始选项卡 → 样式组 → 套用表格格式 ▾ → 表样式浅色 9'},{c:'dlg.table',chk:v=>v.hdr?0:'数据有列标题，应勾选「表包含标题」',t:'「创建表」对话框：确认来源 =$A$1:$H$7，勾选“表包含标题”→ 确定',std:1}]]},
+{id:6,k:'4.3 单元格样式',q:'将 A1 单元格设置单元格样式为：20%-强调文字-颜色 3。',a:'选中 A1 单元格，单击开始选项卡，样式组，单元格样式，设置 20%-强调文字-颜色 3。',
+ paths:[[{c:'cellStyle',need:['A1'],v:'20%-强调文字-颜色 3',t:'选中 A1 → 开始选项卡 → 样式组 → 单元格样式 ▾ → 20%-强调文字-颜色 3'}]]},
+{id:7,k:'4.3 条件格式',q:'将语文、数学、英语三科不及格的单元格用黄色填充标记。',a:'选中 D2:F7，单击开始选项卡，样式组，条件格式，突出显示单元格规则，设置：小于，60，黄色填充。',
+ paths:[[{c:'cf.open',need:['D2:F7'],v:'小于',t:'选中 D2:F7（不带列标题）→ 开始 → 样式组 → 条件格式 ▾ → 突出显示单元格规则 → 小于'},{c:'dlg.cf',chk:v=>String(v.val).trim()!='60'?'数值应填 60':v.fmt!='黄填充色深黄色文本'?'设置为：应选黄色填充（黄填充色深黄色文本）':0,t:'输入 60，设置为「黄填充色深黄色文本」→ 确定'}]]},
+{id:8,k:'4.4 公式',q:'使用函数求出所有同学的总成绩。',a:'选中 G2 单元格，输入公式：=SUM(D2:F2)，按下 Enter 键，选中 G2 并指向填充柄，按下鼠标左键向下拖动填充柄到 G7。',sheet:()=>base({noG:1}),
+ paths:[[{c:'enter',need:['G2'],chk:v=>v.replace(/\s/g,'').toUpperCase()=='=SUM(D2:F2)'?0:'公式应为 =SUM(D2:F2)（题目要求使用函数）',t:'选中 G2 → 输入 =SUM(D2:F2) → 按 Enter'},{c:'fill',need:['G2'],chk:v=>v=='G2:G7'?0:'应拖动填充柄到 G7',t:'再选中 G2 → 指向右下角填充柄（小方块）→ 按住左键向下拖到 G7'}]]},
+{id:9,k:'4.5 排序',q:'对数据清单中的记录按总成绩降序排序，若总成绩相同，则按语文成绩降序排序。',a:'选中 A1:H7，单击数据选项卡，排序和筛选组，排序，设置主要关键字为：总成绩，次序为：降序；次要关键字为：语文成绩，次序为：降序。',note:'考一个关键字，则只需要主要关键字；考多个关键字，则第一个为主要关键字，其余都是次要关键字。',
+ paths:[[{c:'data.sort',need:['A1:H7'],t:'选中 A1:H7 → 数据选项卡 → 排序和筛选组 → 排序'},{c:'dlg.sort',chk:v=>sortChk(v,[['总成绩','降序'],['语文成绩','降序']]),t:'主要关键字：总成绩 / 降序 → 添加条件 → 次要关键字：语文成绩 / 降序 → 确定'}]]},
+{id:10,k:'4.5 筛选',q:'筛选出所有总成绩大于 100 分的女同学。',a:'选中 A1:H7，单击数据选项卡，排序和筛选组，筛选，单击“性别”字段的筛选器箭头，设置筛选条件为：女；单击“总成绩”字段的筛选器箭头，设置筛选条件为：大于，100。',
+ paths:[[{c:'data.filter',need:['A1:H7'],t:'选中 A1:H7 → 数据选项卡 → 排序和筛选组 → 筛选'},{c:'filt',chk:v=>v.c!=3?'这一步应设置「性别」字段':(v.vals.join()!='女'?'性别只勾选「女」':0),t:'单击「性别」筛选箭头 → 只勾选「女」→ 确定'},{c:'filtNum',chk:v=>v.c!=7?'应设置「总成绩」字段':v.op!='大于'?'条件应为「大于」':String(v.val).trim()!='100'?'数值应为 100':0,t:'单击「总成绩」筛选箭头 → 数字筛选 → 大于 → 100 → 确定'}],
+ [{c:'data.filter',need:['A1:H7'],t:'筛选'},{c:'filtNum',chk:v=>v.c==7&&v.op=='大于'&&String(v.val).trim()=='100'?0:'总成绩：大于 100',t:'总成绩 大于 100'},{c:'filt',chk:v=>v.c==3&&v.vals.join()=='女'?0:'性别只勾选「女」',t:'性别 女'}]]},
+{id:11,k:'4.5 分类汇总',q:'求男女生总成绩的最高分。',a:'（1）选中 A1:H7，单击数据选项卡，排序和筛选组，排序，设置主要关键字为：性别，设置次序为：升序；（2）选中 A1:H7，单击数据选项卡，分级显示组，分类汇总，设置分类字段为：性别，汇总方式为：最大值，选定汇总项为：总成绩。',note:'分类汇总前必须先按分类字段排序。',
+ paths:[[{c:'data.sort',need:['A1:H7'],t:'（1）选中 A1:H7 → 数据 → 排序'},{c:'dlg.sort',chk:v=>sortChk(v,[['性别','升序']]),t:'主要关键字：性别，次序：升序 → 确定'},{c:'data.subtotal',need:['A1:H7'],t:'（2）选中 A1:H7 → 数据 → 分级显示组 → 分类汇总'},{c:'dlg.subtotal',chk:v=>v.field!='性别'?'分类字段应为「性别」':v.fn!='最大值'?'汇总方式应为「最大值」':v.items.join()!='总成绩'?'选定汇总项只勾选「总成绩」（注意默认勾选了最后一列，要取消）':0,t:'分类字段：性别；汇总方式：最大值；选定汇总项：只勾选总成绩 → 确定'}]]},
+{id:12,k:'4.5 数据验证',q:'设置英语成绩为百分制。',a:'选中 F2:F7，单击数据选项卡，数据工具组，数据验证，设置数据为：小数，介于，最小值为 0，最大值为 100。',
+ paths:[[{c:'data.validation',need:['F2:F7'],t:'选中 F2:F7（不带列标题）→ 数据选项卡 → 数据工具组 → 数据验证'},{c:'dlg.dv',chk:v=>v.allow!='小数'?'允许应选「小数」':v.op!='介于'?'数据应选「介于」':(String(v.min).trim()!='0'||String(v.max).trim()!='100')?'最小值 0，最大值 100':0,t:'允许：小数；数据：介于；最小值 0；最大值 100 → 确定'}]]},
+{id:13,k:'4.6 插入图表',q:'将学生姓名和总成绩，生成三维饼图。',a:'选中 A1:A7，按下 Ctrl 键同时选中 G1:G7，单击插入选项卡，图表组，选择三维饼图并插入。',note:'讲义写的是 A1:A7（学号列）。本练习表的“姓名”在 B 列，因此 B1:B7 + G1:G7 也判为正确。',
+ paths:[[{c:'chart',need:['A1:A7,G1:G7','B1:B7,G1:G7'],v:'三维饼图',t:'拖选 A1:A7 → 按住 Ctrl 再拖选 G1:G7 → 插入选项卡 → 图表组 → 饼图 ▾ → 三维饼图'}]]},
+{id:14,k:'4.6 修饰图表',q:'设置图表的数据标签“居中”显示。',a:'选中图表，单击图表工具-图表设计选项卡，图表布局组，添加图表元素，数据标签，设置居中。',note:'图表设计选项卡：图表布局组（添加图表元素、快速布局）；图表样式组；数据组（切换行/列、选择数据）；类型（更改图表类型）。图表工具-格式选项卡：同绘图工具-形状格式选项卡，如大小组（高度、宽度）。',sheet:()=>{const s=base();s.chart={labels:ROWS.map(r=>r[1]),vals:ROWS.map(r=>r[3]+r[4]+r[5]),type:'三维饼图',lab:null};return s},
+ paths:[[{c:'addElem',v:'数据标签/居中',t:'单击选中图表 → 图表设计选项卡 → 图表布局组 → 添加图表元素 ▾ → 数据标签 → 居中'}]]},
+{id:15,k:'4.6 迷你图',q:'为语文、数学、英语成绩生成柱形迷你图，放置在 G 列。',a:'选中 D2:F7，单击插入选项卡，迷你图组，柱形，选择迷你图位置范围 G1:G7.',note:'⚠ 讲义写的位置范围是 G1:G7；但数据 D2:F7 只有 6 行，真实 Excel 中位置范围必须是 G2:G7，否则提示“位置引用或数据区域无效”。本练习按 G2:G7 判分。',sheet:()=>base({noG:1,g1:'迷你图'}),
+ paths:[[{c:'spark',need:['D2:F7'],v:'柱形',t:'选中 D2:F7 → 插入选项卡 → 迷你图组 → 柱形'},{c:'dlg.spark',chk:v=>{const l=v.loc.replace(/\$/g,'').toUpperCase().trim();return l=='G2:G7'?0:l=='G1:G7'?'讲义写 G1:G7，但 6 行数据要对应 6 个单元格，真实 Excel 需填 G2:G7':'位置范围应为 G2:G7'},t:'位置范围填 G2:G7 → 确定'}]]},
+{id:16,k:'4.6 迷你图',q:'设置迷你图颜色为紫色。',a:'选中 G1:G7，单击迷你图工具-迷你图选项卡，设置迷你图颜色为紫色。',sheet:()=>{const s=base({noG:1,g1:'迷你图'});for(let r=2;r<=7;r++)s.sparks[r+',7']={src:r,color:'#376092'};return s},
+ paths:[[{c:'sparkColor',need:['G1:G7','G2:G7'],v:'紫色',t:'选中 G2:G7（含迷你图的单元格）→ 迷你图选项卡 → 迷你图颜色 ▾ → 紫色'}]]}];
+function sortChk(v,want){if(!v.hdr)return '数据包含列标题，应勾选「数据包含标题」';for(let i=0;i<want.length;i++){const k=v.keys[i],w=want[i],nm=i?'次要关键字':'主要关键字';if(!k||k[0]!=w[0])return `${nm}应为「${w[0]}」`;if(k[1]!=w[1])return `${nm}「${w[0]}」的次序应为「${w[1]}」`}if(v.keys.length>want.length)return '条件多了，删除多余的次要关键字';return 0}
+/* ===== 进度 ===== */
+const KEY='xlops_v1';let PG=JSON.parse(localStorage.getItem(KEY)||'null')||{done:{},wrong:{},exams:[],area:{}};
+const save=()=>{localStorage.setItem(KEY,JSON.stringify(PG));stat()};
+function stat(){const w=Object.values(PG.wrong).filter(x=>!x.m).length;$('#stat').textContent=`已做对 ${Object.keys(PG.done).length}/16 · 待巩固错题 ${w}`+(PG.exams.length?` · 最近考试 ${PG.exams[PG.exams.length-1].s} 分`:'')}
+/* ===== 判题引擎 ===== */
+function startQ(id){const q=QS[id-1];S=q.sheet?q.sheet():base();sel=[{r1:1,c1:1,r2:1,c2:1}];E={q,paths:q.paths.map(s=>({s,i:0,alive:true})),mist:0,done:false,gave:false,fail:false};curTab='开始';closeAll();$('#stab').textContent='';renderAll();renderQ()}
+function act(a){if(!E||E.done)return false;const s=selStr();let selErr=null,valErr=null;const ok=[];
+ for(const p of E.paths){if(!p.alive)continue;const st=p.s[p.i];if(st.c!==a.c)continue;
+  if(st.need&&!st.need.includes(s)){selErr=selErr||st;continue}
+  let m=0;if(st.v!==undefined&&a.v!==st.v)m=`这里应选择「${st.v}」`;if(st.chk)m=st.chk(a.v);if(m){valErr=valErr||m;continue}ok.push(p)}
+ if(ok.length){E.paths.forEach(p=>{if(!ok.includes(p))p.alive=false});ok.forEach(p=>p.i++);const fin=ok.some(p=>p.i>=p.s.length);fb('ok','✓ 正确！'+(fin?'本题完成。':'继续下一步。'));if(fin){E.done=true;setTimeout(()=>finishQ(false),60)}renderQ(true);return true}
+ E.mist++;const exam=mode=='exam';let msg;
+ if(exam)msg=`✗ 操作不正确（本题第 ${E.mist} 次，3 次即判错）`;
+ else if(selErr)msg=`✗ 选区不对：当前选中「${s||'无'}」，这一步应选中「${selErr.need[0]}」。`;
+ else if(valErr)msg='✗ '+valErr;
+ else{const st=hintStep();msg=`✗ 这一步不是这样操作。${st?'提示：'+st.t:''}`}
+ fb('bad',msg);if(exam&&E.mist>=3){E.done=true;E.fail=true;setTimeout(()=>finishQ(false),400)}renderQ(true);return false}
+function rewind(){if(!E||E.done)return;E.paths.forEach(p=>{if(p.alive&&p.i>0)p.i--});renderQ(true)}
+function hintStep(){const p=E.paths.find(p=>p.alive);return p&&p.s[p.i]}
+function run(c,v){if(!act({c,v}))return false;H[c]&&H[c](v);renderAll();return true}
+function fb(cls,t){const e=$('#fb');if(!e)return;e.className=cls;e.innerHTML=t}
+/* ===== 会话：学习/考试/错题本 ===== */
+function startSession(m,list){mode=m;clearInterval(window._ti);SS={mode:m,list:[...list],pend:[],res:[],n:0,total:list.length,t0:Date.now()};
+ if(m=='exam'){SS.end=Date.now()+20*60e3;window._ti=setInterval(()=>{const r=SS.end-Date.now();const t=$('#timer');if(t)t.textContent=fmtT(r);if(r<=0)endSession()},500)}nextQ()}
+const fmtT=ms=>{ms=Math.max(0,ms);const s=Math.floor(ms/1000);return String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0')};
+function nextQ(){if(SS.mode=='exam'&&E&&!E.done&&SS.cur)recordExam(0);SS.pend.forEach(p=>p.w--);let k=SS.pend.findIndex(p=>p.w<=0),id,re=false;
+ if(k>=0){id=SS.pend.splice(k,1)[0].id;re=true}else if(SS.list.length)id=SS.list.shift();else if(SS.pend.length){id=SS.pend.shift().id;re=true}else return endSession();
+ SS.cur={id,re};SS.n++;startQ(id)}
+function recordExam(sc){SS.res.push({id:SS.cur.id,sc,mist:E.mist});if(sc<10){PG.wrong[SS.cur.id]={cnt:((PG.wrong[SS.cur.id]||{}).cnt||0)+1,m:false};save()}SS.cur=null}
+function finishQ(gave){const id=E.q.id,ok=!E.fail&&!E.gave&&E.mist==0;
+ if(SS.mode=='exam'){recordExam(E.fail||E.gave?0:E.mist==0?10:5)}
+ else{if(ok){PG.done[id]=1;if(PG.wrong[id]&&(SS.mode=='wrong'||SS.cur.re))PG.wrong[id].m=true}
+  else{PG.wrong[id]={cnt:((PG.wrong[id]||{}).cnt||0)+1,m:false};SS.pend.push({id,w:3})}save()}
+ E.done=true;renderQ();showAns(ok)}
+function showAns(ok){const a=$('#ans');if(!a)return;a.style.display='block';a.innerHTML=`<b>${ok?'🎉 一次做对！':(SS.mode=='exam'?'本题已记录':'已加入错题本，过 3 题后会再考你')}</b><br><b>📘 标准答案（讲义原文）：</b>${E.q.a}${E.q.note?`<br><b>📝 注：</b>${E.q.note}`:''}`;$('#nextb').disabled=false;$('#nextb').textContent=SS.mode=='exam'?'下一题 →':'下一题 →'}
+function endSession(){clearInterval(window._ti);if(SS.mode=='exam'){if(SS.cur&&E&&!E.done)recordExam(0);SS.list.forEach(id=>SS.res.push({id,sc:0,mist:'-',skip:1}));SS.list.forEach(id=>{PG.wrong[id]={cnt:((PG.wrong[id]||{}).cnt||0)+1,m:false}});SS.list=[];
+ const tot=Math.round(SS.res.reduce((a,b)=>a+b.sc,0)/(SS.total*10)*100);PG.exams.push({s:tot,t:Date.now()});save();E=null;
+ $('#qp').innerHTML=`<h2 style="margin:0">考试结束</h2><div class="big">${tot} 分</div><p class="tip">用时 ${fmtT(Date.now()-SS.t0)}；满分 100（每题 10 分：零失误 10 分，1–2 次失误 5 分，3 次失误/未做 0 分）</p><table class="t">${SS.res.map(r=>`<tr><td>第${r.id}题</td><td>${QS[r.id-1].q}</td><td><b style="color:${r.sc==10?'#16a34a':r.sc?'#a16207':'#dc2626'}">${r.sc}</b></td></tr>`).join('')}</table><p>失分题已加入错题本。</p><button class="btn" id="again">再考一次</button> <button class="btn gh" onclick="setMode('wrong')">去错题本</button>`;$('#again').onclick=()=>setMode('exam');return}
+ $('#qp').innerHTML=`<h3>✅ 本轮完成</h3><p>${SS.mode=='wrong'?'错题都已重做正确！':'16 道题都练完了，错的题也已重做正确。'}</p><button class="btn" onclick="setMode('exam')">去考试</button> <button class="btn gh" onclick="setMode('learn')">再练一遍</button>`;E=null}
+/* ===== 左侧题目面板 ===== */
+function renderQ(partial){if(!E)return;const q=E.q,learn=mode!='exam';
+ if(partial&&$('#steps')){$('#steps').innerHTML=stepsHTML();return}
+ const qlist=learn&&SS.mode=='learn'?`<div id="qlist">${QS.map(x=>`<button class="${PG.done[x.id]?'d':''} ${PG.wrong[x.id]&&!PG.wrong[x.id].m?'w':''} ${x.id==q.id?'c':''}" data-j="${x.id}">${x.id}</button>`).join('')}</div><div class="tip" style="font-size:12px;color:#888">绿=做对过 红=待巩固 · 点数字可跳题</div>`:'';
+ $('#qp').innerHTML=`<div style="display:flex;justify-content:space-between;align-items:center"><span><span class="tag">${{learn:'学习模式',exam:'考试模式',wrong:'错题本重练'}[mode]}</span>${SS.cur&&SS.cur.re?'<span class="tag r">🔁 错题重考</span>':''}</span>${mode=='exam'?`<span id="timer">${fmtT(SS.end-Date.now())}</span>`:''}</div>
+ <div style="font-size:12px;color:#888;margin-top:6px">${mode=='exam'?`第 ${SS.n} / ${SS.total} 题`:`第 ${q.id} 题`} · <span class="tag y">${q.k}</span></div>
+ <div id="qtext">${q.id}. ${q.q}</div>
+ ${learn?`<div style="font-size:13px;font-weight:600">操作步骤提示</div><ul class="steps" id="steps">${stepsHTML()}</ul>`:'<div class="tip" style="font-size:12px;color:#888">考试模式：无提示，按真实 Excel 操作。失误 3 次本题判 0 分。</div>'}
+ <div id="fb"></div>
+ <div><button class="btn gh" id="redo">↺ 重做本题</button>${learn?'<button class="btn gh" id="give">看答案</button>':''}<button class="btn" id="nextb" ${mode=='exam'?'':'disabled'}>${mode=='exam'?'跳过 →':'下一题 →'}</button>${mode=='exam'?'<button class="btn" style="background:#b91c1c" id="sub">交卷</button>':''}</div>
+ <div id="ans"></div>${qlist}<div style="font-size:12px;color:#888;margin-top:10px;line-height:1.6">操作说明：拖动鼠标选区，Ctrl+拖动可多选；右键单元格/行号/列标/工作表标签弹出菜单；选中单元格后直接键入内容按 Enter。</div>`;
+ $('#redo').onclick=()=>{if(mode=='exam'&&E.done)return;const m=E.mist;startQ(q.id);E.mist=m};
+ if($('#give'))$('#give').onclick=()=>{if(E.done)return;E.gave=true;E.done=true;finishQ(true)};
+ $('#nextb').onclick=()=>{if(mode!='exam'&&!E.done)return;nextQ()};
+ if($('#sub'))$('#sub').onclick=()=>{if(confirm('确定交卷？未完成的题记 0 分'))endSession()};
+ document.querySelectorAll('#qlist button').forEach(b=>b.onclick=()=>{SS.cur={id:+b.dataset.j,re:false};startQ(+b.dataset.j)})}
+function stepsHTML(){const p=E.paths.find(p=>p.alive)||E.paths[0];return p.s.map((st,i)=>`<li class="${i<p.i?'ok':i==p.i&&!E.done?'cur':''}">${i<p.i?'✓ ':i==p.i?'👉 ':''}${st.t}${st.std?' <span class="std">【讲义未写，按 Excel 标准步骤】</span>':''}</li>`).join('')}
+/* ===== Ribbon ===== */
+const b=(l,c,v)=>`<button class="rb" data-cmd="${c}"${v?` data-v="${v}"`:''}>${l}</button>`,m=(l,k)=>`<button class="rb dd" data-menu="${k}">${l}</button>`,x=l=>b(l,'x:'+l.replace(/<[^>]+>/g,''));
+const RIB={'开始':[['剪贴板',[x('粘贴'),x('剪切'),x('复制'),x('格式刷')]],['字体',[x('等线'),x('11'),x('<b>B</b>'),x('<i>I</i>'),x('<u>U</u>'),m('田 边框','border'),m('🪣 填充颜色','fillColor'),m('A 字体颜色','fontColor')]],['对齐方式',[x('顶端对齐'),x('垂直居中'),x('左对齐'),x('居中'),x('右对齐'),x('自动换行'),b('⇔ 合并后居中','merge')]],['数字',[m('常规','numfmt'),x('%'),x('千位分隔'),x('增加小数位数')]],['样式',[m('条件格式','cond'),m('套用表格格式','tbl'),m('单元格样式','cstyle')]],['单元格',[m('插入','ins'),m('删除','del'),m('格式','fmt')]],['编辑',[x('Σ 自动求和'),x('填充'),x('清除'),m('排序和筛选','sortf')]]],
+'插入':[['表格',[x('数据透视表'),x('推荐的数据透视表'),x('表格')]],['插图',[x('图片'),x('形状'),x('SmartArt')]],['图表',[x('推荐的图表'),m('柱形图','colc'),m('折线图','colc'),m('饼图','pie'),m('条形图','colc'),m('散点图','colc')]],['迷你图',[b('折线','spark','折线'),b('柱形','spark','柱形'),b('盈亏','spark','盈亏')]],['筛选器',[x('切片器'),x('日程表')]],['文本',[x('文本框'),x('页眉和页脚')]]],
+'页面布局':[['页面设置',[x('页边距'),x('纸张方向'),x('纸张大小'),x('打印区域')]],['调整为合适大小',[x('宽度'),x('高度'),x('缩放比例')]]],
+'公式':[['函数库',[x('插入函数'),x('自动求和'),x('最近使用的函数'),x('财务'),x('逻辑'),x('文本'),x('日期和时间'),x('数学和三角函数')]],['定义的名称',[x('名称管理器'),x('定义名称')]],['计算',[x('计算选项')]]],
+'数据':[['获取和转换数据',[x('获取数据'),x('自文本/CSV'),x('全部刷新')]],['排序和筛选',[x('A→Z 升序'),x('Z→A 降序'),b('排序','data.sort'),b('筛选','data.filter'),x('清除'),x('高级')]],['数据工具',[x('分列'),x('快速填充'),x('删除重复值'),b('数据验证','data.validation'),x('合并计算')]],['预测',[x('模拟分析'),x('预测工作表')]],['分级显示',[x('组合'),x('取消组合'),b('分类汇总','data.subtotal')]]],
+'审阅':[['校对',[x('拼写检查')]],['批注',[x('新建批注')]],['保护',[x('保护工作表'),x('保护工作簿')]]],
+'视图':[['工作簿视图',[x('普通'),x('分页预览'),x('页面布局')]],['显示',[x('网格线'),x('编辑栏')]],['窗口',[x('冻结窗格'),x('新建窗口')]]],
+'图表设计':[['图表布局',[m('添加图表元素','addElem'),m('快速布局','qlay')]],['图表样式',[x('更改颜色'),x('图表样式')]],['数据',[x('切换行/列'),x('选择数据')]],['类型',[x('更改图表类型')]],['位置',[x('移动图表')]]],
+'格式':[['形状样式',[x('形状填充'),x('形状轮廓')]],['大小',[x('高度'),x('宽度')]]],
+'迷你图':[['迷你图',[x('编辑数据')]],['类型',[x('折线'),x('柱形'),x('盈亏')]],['显示',[x('高点'),x('低点'),x('负点'),x('首点'),x('尾点'),x('标记')]],['样式',[x('样式库'),m('迷你图颜色','sparkColor'),m('标记颜色','mkColor')]],['组合',[x('坐标轴'),x('组合'),x('取消组合'),x('清除')]]]};
+function ctxTabs(){const t=[];if(S.chart&&S.chart.sel)t.push('图表设计','格式');if(selCells().some(([r,c])=>S.sparks[r+','+c]))t.push('迷你图');return t}
+function renderRibbon(){const ct=ctxTabs();if(!RIB[curTab]||(['图表设计','格式','迷你图'].includes(curTab)&&!ct.includes(curTab)))curTab='开始';
+ $('#tabs').innerHTML='<span data-t="文件">文件</span>'+['开始','插入','页面布局','公式','数据','审阅','视图'].map(t=>`<span data-t="${t}" class="${t==curTab?'on':''}">${t}</span>`).join('')+ct.map(t=>`<span data-t="${t}" class="ctx ${t==curTab?'on':''}">${t=='迷你图'?'迷你图工具-迷你图':t=='图表设计'?'图表工具-图表设计':'格式'}</span>`).join('');
+ $('#ribbon').innerHTML=RIB[curTab].map(g=>`<div class="grp"><div class="bs">${g[1].join('')}</div><div class="gl">${g[0]}</div></div>`).join('')}
+$('#tabs').onclick=e=>{const t=e.target.dataset.t;if(!t)return;if(t=='文件'){toast('（本练习不涉及文件菜单）');return}curTab=t;renderRibbon()};
+$('#ribbon').onclick=e=>{const bt=e.target.closest('button');if(!bt)return;if(bt.dataset.cmd)return run(bt.dataset.cmd,bt.dataset.v);const r=bt.getBoundingClientRect();menu(r.left,r.bottom,MENUS[bt.dataset.menu](),0,bt.dataset.menu=='tbl')};
+/* ===== 菜单 ===== */
+const cl=(cmd)=>COLORS.map(([n,c])=>({t:n,sw:c||'#fff',cmd,v:n}));
+const xi=t=>({t,cmd:'x:'+t});
+const MENUS={fillColor:()=>[{hd:'标准色'},...cl('fillColor')],fontColor:()=>cl('x:字体颜色'),sparkColor:()=>cl('sparkColor'),mkColor:()=>cl('x:标记颜色'),
+ border:()=>['下框线','上框线','所有框线','外侧框线','无框线'].map(xi),numfmt:()=>['常规','数值','货币','会计专用','短日期','百分比','文本'].map(xi),
+ cond:()=>[{t:'突出显示单元格规则',sub:['大于...','小于...','介于...','等于...','文本包含...','发生日期...','重复值...'].map(t=>({t,cmd:'cf.open',v:t.replace('...','')}))},{t:'最前/最后规则',sub:['前 10 项...','前 10%...','最后 10 项...','高于平均值...','低于平均值...'].map(xi)},{t:'数据条',sub:['渐变填充','实心填充'].map(xi)},{t:'色阶',sub:['绿-黄-红色阶'].map(xi)},{t:'图标集',sub:['三向箭头'].map(xi)},{sep:1},xi('新建规则...'),xi('清除规则'),xi('管理规则...')],
+ tbl:()=>{const o=[{hd:'浅色'}];for(let i=1;i<=21;i++)o.push({t:'表样式浅色 '+i,sw:tsw(i),cmd:'tblStyle',v:'表样式浅色 '+i,g:1});o.push({hd:'中等色'});for(let i=1;i<=7;i++)o.push({t:'表样式中等深浅 '+i,sw:tsw(i+1,1),cmd:'tblStyle',v:'表样式中等深浅 '+i,g:1});return o},
+ cstyle:()=>{const o=[{hd:'好、差和适中'},...['常规','差','好','适中'].map(t=>({t,cmd:'cellStyle',v:t})),{hd:'主题单元格样式'}];[20,40,60].forEach(p=>{for(let i=1;i<=6;i++)o.push({t:`${p}%-强调文字-颜色 ${i}`,sw:acc(i,p),cmd:'cellStyle',v:`${p}%-强调文字-颜色 ${i}`})});o.push({hd:'标题'},...['标题','标题 1','标题 2','汇总'].map(t=>({t,cmd:'cellStyle',v:t})));return o},
+ ins:()=>['插入单元格...','插入工作表行','插入工作表列','插入工作表'].map(xi),del:()=>['删除单元格...','删除工作表行','删除工作表列','删除工作表'].map(xi),
+ fmt:()=>[{hd:'单元格大小'},{t:'行高...',cmd:'ctx.rowh'},xi('自动调整行高'),{t:'列宽...',cmd:'ctx.colw'},xi('自动调整列宽'),xi('默认列宽...'),{hd:'组织工作表'},xi('重命名工作表'),xi('移动或复制工作表...'),{sep:1},{t:'设置单元格格式...',cmd:'ctx.format'}],
+ sortf:()=>[xi('升序'),xi('降序'),{t:'自定义排序...',cmd:'data.sort'},{sep:1},{t:'筛选',cmd:'data.filter'},xi('清除'),xi('重新应用')],
+ colc:()=>['二维','三维','更多...'].map(xi),
+ pie:()=>[{hd:'二维饼图'},{t:'饼图',cmd:'chart',v:'饼图'},{t:'复合饼图',cmd:'chart',v:'复合饼图'},{t:'复合条饼图',cmd:'chart',v:'复合条饼图'},{hd:'三维饼图'},{t:'三维饼图',cmd:'chart',v:'三维饼图'},{hd:'圆环图'},{t:'圆环图',cmd:'chart',v:'圆环图'}],
+ addElem:()=>[['坐标轴',['主要横坐标轴','主要纵坐标轴']],['轴标题',['主要横坐标轴','主要纵坐标轴']],['图表标题',['无','图表上方','居中覆盖']],['数据标签',['无','居中','数据标签内','数据标签外','最佳位置','数据标注']],['数据表',['无','显示图例项标示']],['图例',['无','右侧','顶部','左侧','底部']]].map(([g,s])=>({t:g,sub:s.map(t=>({t,cmd:'addElem',v:g+'/'+t}))})),
+ qlay:()=>['布局 1','布局 2','布局 3'].map(xi)};
+const tsw=(i,d)=>['#9bc2e6','#f4b084','#c9c9c9','#ffd966','#8ea9db','#a9d08e'][(i-1)%6]+(d?'':'');
+const acc=(i,p)=>({1:['#d9e1f2','#b4c6e7','#8ea9db'],2:['#fce4d6','#f8cbad','#f4b084'],3:['#ededed','#dbdbdb','#c9c9c9'],4:['#fff2cc','#ffe699','#ffd966'],5:['#ddebf7','#bdd7ee','#9bc2e6'],6:['#e2efda','#c6e0b4','#a9d08e']})[i][p/20-1];
+function closeAll(lv=0){document.querySelectorAll('.menu').forEach(e=>{if(+e.dataset.l>=lv)e.remove()})}
+function menu(x0,y0,items,lv=0,grid){closeAll(lv);const mm=document.createElement('div');mm.className='menu'+(grid?' grid':'');mm.dataset.l=lv;
+ items.forEach(it=>{const d=document.createElement('div');if(it.sep){d.className='sep'}else if(it.hd){d.className='hd';d.textContent=it.hd}else{d.className='mi';d.innerHTML=(it.sw!==undefined?`<i style="background:${it.sw}"></i>`:'')+(grid&&it.g?'':esc(it.t))+(it.sub?' <span style="margin-left:auto">▸</span>':'');d.title=it.t;d.dataset.t=it.t;
+  const open=()=>{const r=d.getBoundingClientRect();menu(r.right,r.top,it.sub,lv+1)};
+  if(it.sub){d.onmouseenter=open;d.onclick=open}else{d.onmouseenter=()=>closeAll(lv+1);d.onclick=()=>{closeAll();it.fn?it.fn():run(it.cmd,it.v)}}}mm.appendChild(d)});
+ document.body.appendChild(mm);const r=mm.getBoundingClientRect();mm.style.left=Math.max(0,Math.min(x0,innerWidth-r.width-4))+'px';mm.style.top=Math.max(0,Math.min(y0,innerHeight-r.height-4))+'px'}
+document.addEventListener('mousedown',e=>{if(!e.target.closest('.menu')&&!e.target.closest('[data-menu]'))closeAll()});
+/* ===== 对话框 ===== */
+let dlgFree=false;
+function dlg(title,html,onok,free){dlgFree=!!free;const o=$('#ov');o.innerHTML=`<div class="dlg"><div class="dt">${title}<span id="dx">×</span></div><div class="db">${html}</div><div class="df"><button id="dok">确定</button><button id="dcc">取消</button></div></div>`;o.style.display='flex';
+ const cancel=()=>{o.style.display='none';if(!dlgFree)rewind()};$('#dx').onclick=cancel;$('#dcc').onclick=cancel;$('#dok').onclick=()=>{if(onok(o))o.style.display='none'};
+ o.querySelectorAll('.dtabs span').forEach(s=>s.onclick=()=>{o.querySelectorAll('.dtabs span').forEach(z=>z.classList.toggle('on',z==s));o.querySelectorAll('.pane').forEach(p=>p.style.display=p.dataset.p==s.dataset.p?'block':'none')});
+ o.querySelectorAll('.sw').forEach(s=>s.onclick=()=>{o.querySelectorAll('.sw').forEach(z=>z.classList.remove('on'));s.classList.add('on')})}
+const ov=s=>$('#ov').querySelector(s);
+const opts=(a,d)=>a.map(x=>`<option${x==d?' selected':''}>${x}</option>`).join('');
+const hdrCols=()=>{const a=norm(sel[0]);const o=[];for(let c=a.c1;c<=a.c2;c++)o.push(String(val(a.r1,c)));return o};
+function sortRow(i,k,o){return `<div class="srow sr"><span style="width:76px">${i?'次要关键字':'主要关键字'}</span><select class="sk"><option value=""></option>${opts(hdrCols(),k)}</select><span>排序依据</span><select>${opts(['单元格值','单元格颜色','字体颜色'])}</select><span>次序</span><select class="so">${opts(['升序','降序','自定义序列...'],o||'升序')}</select></div>`}
+/* ===== 命令执行 ===== */
+const H={
+ fillColor:v=>selCells().forEach(([r,c])=>C(r,c).bg=CMAP[v]),
+ merge:()=>{const a=norm(sel[0]);S.merges.push(a);C(a.r1,a.c1).al='center'},
+ 'ctx.format':()=>dlg('设置单元格格式',`<div class="dtabs">${['数字','对齐','字体','边框','填充','保护'].map((t,i)=>`<span data-p="${i}" class="${i?'':'on'}">${t}</span>`).join('')}</div>
+  <div class="pane" data-p="0">分类：<select>${opts(['常规','数值','货币','会计专用','日期','百分比','文本'])}</select></div>
+  <div class="pane" data-p="1" style="display:none">文本对齐方式<br>水平对齐：<select id="fh1">${opts(['常规','靠左(缩进)','居中','靠右(缩进)','填充','两端对齐','跨列居中'])}</select> 垂直对齐：<select>${opts(['居中','靠上','靠下'])}</select><br>文本控制<br><label><input type="checkbox">自动换行</label> <label><input type="checkbox">缩小字体填充</label> <label><input type="checkbox" id="fmg">合并单元格</label></div>
+  <div class="pane" data-p="2" style="display:none">字体：<select>${opts(['等线','宋体','微软雅黑'])}</select> 字号：<select>${opts([9,10,11,12,14])}</select></div>
+  <div class="pane" data-p="3" style="display:none">样式/颜色/预置：外边框、内部（本练习不判分）</div>
+  <div class="pane" data-p="4" style="display:none">背景色：<br>${COLORS.map(([n,c])=>`<span class="sw" data-n="${n}" title="${n}" style="background:${c||'#fff'}"></span>`).join('')}</div>
+  <div class="pane" data-p="5" style="display:none"><label><input type="checkbox" checked>锁定</label></div>`,()=>{const s=ov('.sw.on');const v={fill:s?s.dataset.n:'',halign:ov('#fh1').value,merge:ov('#fmg').checked};return run('dlg.format',v)}),
+ 'dlg.format':v=>{const cs=selCells();if(v.fill)cs.forEach(([r,c])=>C(r,c).bg=CMAP[v.fill]);if(v.merge)S.merges.push(norm(sel[0]));if(v.halign=='居中')cs.forEach(([r,c])=>C(r,c).al='center')},
+ 'ctx.rowh':()=>dlg('行高','行高(R)：<input type="text" id="dv1" value="13.5">',()=>run('dlg.rowh',ov('#dv1').value)),
+ 'dlg.rowh':v=>{const a=norm(sel[0]);for(let r=a.r1;r<=a.r2;r++)S.rowH[r]=+v},
+ 'ctx.colw':()=>dlg('列宽','列宽(C)：<input type="text" id="dv1" value="8.38">',()=>run('dlg.colw',ov('#dv1').value)),
+ 'dlg.colw':v=>{const a=norm(sel[0]);for(let c=a.c1;c<=a.c2;c++)S.colW[c]=+v},
+ tblStyle:v=>{S._ts=v;const a=norm(sel[0]);dlg('创建表',`表数据的来源(W)：<br><input type="text" value="=$${L(a.c1)}$${a.r1}:$${L(a.c2)}$${a.r2}" style="width:220px"><br><label><input type="checkbox" id="th" checked> 表包含标题(M)</label>`,()=>run('dlg.table',{hdr:ov('#th').checked}))},
+ 'dlg.table':()=>{const a=norm(sel[0]);S.table={a,st:S._ts};S.filter={a,conds:{}}},
+ cellStyle:v=>{const m=v.match(/(\d+)%-强调文字-颜色 (\d)/);selCells().forEach(([r,c])=>C(r,c).bg=m?acc(+m[2],+m[1]):({'差':'#ffc7ce','好':'#c6efce','适中':'#ffeb9c'})[v]||'')},
+ 'cf.open':v=>dlg(v,`为${v}以下值的单元格设置格式：<br><input type="text" id="cv" value="${v=='小于'?'':''}"> 设置为 <select id="cfm">${opts(['浅红填充色深红色文本','黄填充色深黄色文本','绿填充色深绿色文本','浅红色填充','红色文本','红色边框','自定义格式...'])}</select>`,()=>run('dlg.cf',{val:ov('#cv').value,fmt:ov('#cfm').value})),
+ 'dlg.cf':v=>S.cf.push({a:norm(sel[0]),lt:+v.val}),
+ enter:v=>{const a=sel[0];const c=C(a.r1,a.c1);if(v.startsWith('='))c.f=v.toUpperCase();else c.v=isNaN(v)||v===''?v:+v;sel=[{r1:a.r1+1,c1:a.c1,r2:a.r1+1,c2:a.c1}];$('#fxi').value=''},
+ fill:v=>{const [s,e]=v.split(':');const r1=+s.slice(1),r2=+e.slice(1),c=COLS.indexOf(s[0])+1;const src=C(r1,c);for(let r=r1+1;r<=r2;r++){const d=C(r,c);if(src.f)d.f=src.f.replace(/([A-J])(\d+)/g,(m0,cc,rr)=>cc+(+rr+r-r1));else d.v=src.v}sel=[{r1,c1:c,r2,c2:c}]},
+ 'data.sort':()=>dlg('排序',`<div><button id="addc">+ 添加条件(A)</button> <button id="delc">✕ 删除条件(D)</button> <label style="float:right"><input type="checkbox" id="shd" checked>数据包含标题(H)</label></div><div id="srs">${sortRow(0)}</div>`,()=>{const keys=[...ov('#srs').querySelectorAll('.sr')].map(r=>[r.querySelector('.sk').value,r.querySelector('.so').value]).filter(k=>k[0]);return run('dlg.sort',{keys,hdr:ov('#shd').checked})})||bindSort(),
+ 'dlg.sort':v=>{const a=norm(sel[0]);const rows=[];for(let r=a.r1+1;r<=a.r2;r++){const o=[];for(let c=a.c1;c<=a.c2;c++)o.push(S.cells[r+','+c]?{...S.cells[r+','+c],_v:val(r,c)}:{v:''});rows.push(o)}
+  const hc=hdrCols();rows.sort((p,q)=>{for(const[k,o]of v.keys){const i=hc.indexOf(k);let x=p[i]._v,y=q[i]._v;let d=typeof x=='number'?x-y:String(x).localeCompare(String(y),'zh-CN');if(d)return o=='降序'?-d:d}return 0});
+  rows.forEach((o,i)=>o.forEach((cell,j)=>{const cc={...cell};if(cc.f){cc.v=cc._v;delete cc.f}delete cc._v;S.cells[(a.r1+1+i)+','+(a.c1+j)]=cc}))},
+ 'data.filter':()=>{S.filter={a:norm(sel[0]),conds:{}}},
+ filt:v=>{S.filter.conds[v.c]={vals:v.vals}},filtNum:v=>{S.filter.conds[v.c]={op:v.op,val:+v.val}},
+ 'data.subtotal':()=>{const hc=hdrCols();dlg('分类汇总',`分类字段(A)：<br><select id="sf">${opts(hc)}</select><br>汇总方式(U)：<br><select id="sfn">${opts(['求和','计数','平均值','最大值','最小值','乘积'])}</select><br>选定汇总项(D)：<div style="border:1px solid #ccc;max-height:130px;overflow:auto;padding:0 6px;line-height:1.7">${hc.map((h,i)=>`<label style="display:block"><input type="checkbox" class="si" value="${h}" ${i==hc.length-1?'checked':''}>${h}</label>`).join('')}</div><label><input type="checkbox" checked>替换当前分类汇总(C)</label><br><label><input type="checkbox">每组数据分页(P)</label><br><label><input type="checkbox" checked>汇总结果显示在数据下方(S)</label>`,()=>run('dlg.subtotal',{field:ov('#sf').value,fn:ov('#sfn').value,items:[...$('#ov').querySelectorAll('.si:checked')].map(c=>c.value)}))},
+ 'dlg.subtotal':v=>{const a=norm(sel[0]);const hc=hdrCols();const fi=hc.indexOf(v.field)+a.c1,gi=hc.indexOf('总成绩')+a.c1;const rows=[];for(let r=a.r1+1;r<=a.r2;r++){const o={};for(let c=a.c1;c<=a.c2;c++)o[c]={v:val(r,c),bg:(S.cells[r+','+c]||{}).bg};rows.push(o)}
+  const out=[];let g=null,mx=-1e9,all=-1e9;const flush=()=>{const o={};o[fi]={v:g+' 最大值',b:1};o[gi]={v:mx,b:1};out.push(o)};
+  rows.forEach(o=>{if(g!==null&&o[fi].v!==g){flush();mx=-1e9}g=o[fi].v;mx=Math.max(mx,o[gi].v);all=Math.max(all,o[gi].v);out.push(o)});flush();const t={};t[fi]={v:'总计最大值',b:1};t[gi]={v:all,b:1};out.push(t);
+  for(let r=a.r1+1;r<=NR;r++)for(let c=1;c<=NC;c++)delete S.cells[r+','+c];out.forEach((o,i)=>{for(const c in o)S.cells[(a.r1+1+i)+','+c]=o[c]});toast('左侧出现分级显示 1 2 3')},
+ 'data.validation':()=>dlg('数据验证',`<div class="dtabs"><span class="on">设置</span><span>输入信息</span><span>出错警告</span><span>输入法模式</span></div>验证条件<br>允许(A)：<select id="da">${opts(['任何值','整数','小数','序列','日期','时间','文本长度','自定义'])}</select> <label><input type="checkbox" checked>忽略空值</label><br>数据(D)：<select id="dop">${opts(['介于','未介于','等于','不等于','大于','小于','大于或等于','小于或等于'])}</select><br>最小值(M)：<input type="text" id="dmin"><br>最大值(X)：<input type="text" id="dmax">`,()=>run('dlg.dv',{allow:ov('#da').value,op:ov('#dop').value,min:ov('#dmin').value,max:ov('#dmax').value})),
+ 'dlg.dv':v=>{S.dv.push(v);toast('已对 '+selStr()+' 设置数据验证')},
+ chart:v=>{const [a1,a2]=sel.map(norm);const lc=a1.c1,vc=a2.c1;const labels=[],vals=[];for(let r=a1.r1+1;r<=a1.r2;r++){labels.push(val(r,lc==1?2:lc));vals.push(+val(r,vc)||0)}S.chart={labels,vals,type:v,lab:null,sel:true};curTab='图表设计'},
+ addElem:v=>{S.chart.lab=v.split('/')[1]},
+ spark:v=>{const a=norm(sel[0]);dlg('创建迷你图',`选择所需的数据<br>数据范围(D)：<input type="text" value="${areaStr(a)}"><br>选择放置迷你图的位置<br>位置范围(L)：<input type="text" id="sl" placeholder="例如 $G$2:$G$7">`,()=>run('dlg.spark',{loc:ov('#sl').value}))},
+ 'dlg.spark':v=>{const[s,e]=v.loc.replace(/\$/g,'').toUpperCase().split(':');for(let r=+s.slice(1);r<=+e.slice(1);r++)S.sparks[r+',7']={src:r,color:'#376092'};sel=[{r1:2,c1:7,r2:2,c2:7}];curTab='迷你图'},
+ sparkColor:v=>{for(const k in S.sparks)S.sparks[k].color=CMAP[v]},
+ 'ctx.rename':()=>{const t=$('#stab');t.innerHTML=`<input id="rn" value="${S.name}">`;const i=$('#rn');i.focus();i.select();i.onkeydown=e=>{e.stopPropagation();if(e.key=='Enter'){run('renameDone',i.value.trim())}if(e.key=='Escape'){rewind();renderAll()}}},
+ renameDone:v=>{S.name=v;$('#stab').textContent=v}};
+function bindSort(){const g=()=>$('#ov');if(!g().querySelector('#addc'))return;g().querySelector('#addc').onclick=()=>{const n=g().querySelectorAll('.sr').length;g().querySelector('#srs').insertAdjacentHTML('beforeend',sortRow(n))};g().querySelector('#delc').onclick=()=>{const r=g().querySelectorAll('.sr');if(r.length>1)r[r.length-1].remove()}}
+const _ds=H['data.sort'];H['data.sort']=()=>{_ds();bindSort()};
+/* 筛选箭头弹窗 */
+function filterPop(c,x0,y0){const f=S.filter,a=f.a;const vals=[...new Set(Array.from({length:a.r2-a.r1},(_,i)=>String(val(a.r1+1+i,c))))];const num=typeof val(a.r1+1,c)=='number';
+ const items=[xi('升序'),xi('降序'),{sep:1},{t:num?'数字筛选':'文本筛选',sub:(num?['等于...','不等于...','大于...','大于或等于...','小于...','小于或等于...','介于...','前 10 项...','高于平均值','低于平均值']:['等于...','不等于...','开头是...','结尾是...','包含...']).map(t=>({t,fn:()=>numDlg(c,t.replace('...',''))}))},{sep:1},{t:'☑ 按值勾选...',fn:()=>listDlg(c,vals)}];menu(x0,y0,items)}
+function listDlg(c,vals){dlg('筛选：'+val(1,c),`<label><input type="checkbox" id="fall" checked>(全选)</label><br>${vals.map(v=>`<label style="display:block"><input type="checkbox" class="fv" value="${v}" checked>${v}</label>`).join('')}`,()=>run('filt',{c,vals:[...$('#ov').querySelectorAll('.fv:checked')].map(x=>x.value)}),1);ov('#fall').onchange=e=>$('#ov').querySelectorAll('.fv').forEach(x=>x.checked=e.target.checked)}
+function numDlg(c,op){dlg('自定义自动筛选方式',`显示行：${val(1,c)}<br><select id="nop">${opts(['等于','不等于','大于','大于或等于','小于','小于或等于'],op)}</select> <input type="text" id="nv">`,()=>run('filtNum',{c,op:ov('#nop').value,val:ov('#nv').value}),1)}
+/* ===== 渲染表格 ===== */
+function hidden(r){const f=S.filter;if(!f||r<=f.a.r1||r>f.a.r2)return false;for(const c in f.conds){const k=f.conds[c],v=val(r,+c);if(k.vals&&!k.vals.includes(String(v)))return true;if(k.op){const o={'等于':v==k.val,'不等于':v!=k.val,'大于':v>k.val,'大于或等于':v>=k.val,'小于':v<k.val,'小于或等于':v<=k.val}[k.op];if(!o)return true}}return false}
+function covered(r,c){return S.merges.some(m=>inA(m,r,c)&&!(m.r1==r&&m.c1==c))}
+function renderGrid(){let h='<colgroup><col style="width:36px">';for(let c=1;c<=NC;c++)h+=`<col style="width:${S.colW[c]?Math.round(S.colW[c]*7+5):c==2?60:72}px">`;h+='</colgroup><tr><th class="corner"></th>';
+ const sc=new Set(),sr=new Set();selCells().forEach(([r,c])=>{sc.add(c);sr.add(r)});
+ for(let c=1;c<=NC;c++)h+=`<th data-col="${c}" class="${sc.has(c)?'hl':''}">${L(c)}</th>`;h+='</tr>';
+ for(let r=1;r<=NR;r++){if(hidden(r))continue;const rh=S.rowH[r];h+=`<tr${rh?` style="height:${Math.round(rh*1.33)}px"`:''}><th data-row="${r}" class="${sr.has(r)?'hl':''}" style="${S.filter&&Object.keys(S.filter.conds).length&&r>S.filter.a.r1&&r<=S.filter.a.r2?'color:#1d4ed8':''}${rh?';height:'+Math.round(rh*1.33)+'px;font-size:9px;line-height:1':''}">${r}</th>`;
+  for(let c=1;c<=NC;c++){if(covered(r,c))continue;const m=S.merges.find(m=>m.r1==r&&m.c1==c);const x=S.cells[r+','+c]||{};let v=val(r,c);let st='';let bg=x.bg||'',col='',bold=x.b;
+   if(S.table&&inA(S.table.a,r,c)){const t=S.table.a;if(r==t.r1){bg=bg||'#4472c4';col='#fff';bold=1}else if((r-t.r1)%2==1)bg=bg||'#d9e1f2'}
+   S.cf.forEach(k=>{if(inA(k.a,r,c)&&typeof v=='number'&&v<k.lt){bg='#ffeb9c';col='#9c5700'}});
+   if(bg)st+=`background:${bg};`;if(col)st+=`color:${col};`;if(bold)st+='font-weight:700;';if(x.al=='center'||m)st+='text-align:center;';else if(typeof v=='number')st+='text-align:right;';if(rh)st+='height:'+Math.round(rh*1.33)+'px;padding-top:0;padding-bottom:0;font-size:9px;line-height:1;';
+   let inner=esc(v);const sp=S.sparks[r+','+c];if(sp){const d=[4,5,6].map(cc=>+val(sp.src,cc)||0),mx=Math.max(...d,1);inner=`<svg width="100%" height="18" viewBox="0 0 60 18" preserveAspectRatio="none">${d.map((q,i)=>`<rect x="${6+i*18}" y="${18-q/mx*16}" width="12" height="${q/mx*16}" fill="${sp.color}"/>`).join('')}</svg>`}
+   const fa=S.filter&&r==S.filter.a.r1&&c>=S.filter.a.c1&&c<=S.filter.a.c2?`<span class="farrow ${S.filter.conds[c]?'on':''}" data-fc="${c}">${S.filter.conds[c]?'⧩':'▼'}</span>`:'';
+   h+=`<td data-r="${r}" data-c="${c}"${m?` colspan="${m.c2-m.c1+1}"`:''} class="${inSel(r,c)?'sel':''} ${sel[sel.length-1].r1==r&&sel[sel.length-1].c1==c?'act':''}" style="${st}">${inner}${fa}</td>`}h+='</tr>'}
+ $('#grid').innerHTML=h;if(!$('#rn'))$('#stab').textContent=S.name;const a=sel[sel.length-1];$('#nb').textContent=AD(Math.min(a.r1,a.r2),Math.min(a.c1,a.c2));const cx=S.cells[Math.min(a.r1,a.r2)+','+Math.min(a.c1,a.c2)];if(document.activeElement!=$('#fxi'))$('#fxi').value=cx?(cx.f||cx.v):'';
+ const la=norm(sel[sel.length-1]);const td=document.querySelector(`#grid td[data-r="${la.r2}"][data-c="${la.c2}"]`);const fh=$('#fh');if(td&&!la.row&&!la.col){const gw=$('#gw').getBoundingClientRect(),tr=td.getBoundingClientRect();fh.style.display='block';fh.style.left=(tr.right-gw.left+$('#gw').scrollLeft-4)+'px';fh.style.top=(tr.bottom-gw.top+$('#gw').scrollTop-4)+'px'}else fh.style.display='none';
+ renderChart()}
+function renderChart(){const ch=$('#chart');if(!S.chart){ch.style.display='none';return}ch.style.display='block';ch.classList.toggle('on',!!S.chart.sel);const{labels,vals,type,lab}=S.chart;const tot=vals.reduce((a,b)=>a+b,0)||1;const pal=['#4472c4','#ed7d31','#a5a5a5','#ffc000','#5b9bd5','#70ad47'];
+ const is3=type=='三维饼图',cx=120,cy=115,rx=95,ry=is3?55:95,dep=is3?18:0;let a0=-Math.PI/2,s='',top='',lb='';
+ vals.forEach((v,i)=>{const a1=a0+v/tot*2*Math.PI;const p=(a,dy=0)=>`${cx+rx*Math.cos(a)},${cy+ry*Math.sin(a)+dy}`;const lg=a1-a0>Math.PI?1:0;
+  if(dep)s+=`<path d="M${cx},${cy+dep}L${p(a0,dep)}A${rx},${ry} 0 ${lg} 1 ${p(a1,dep)}Z" fill="${pal[i%6]}" filter="brightness(.7)" opacity=".75"/>`;
+  top+=`<path d="M${cx},${cy}L${p(a0)}A${rx},${ry} 0 ${lg} 1 ${p(a1)}Z" fill="${pal[i%6]}" stroke="#fff"/>`;
+  if(lab&&lab!='无'){const am=(a0+a1)/2,k=lab=='数据标签外'?1.15:lab=='居中'?0.6:0.8;lb+=`<text x="${cx+rx*k*Math.cos(am)}" y="${cy+ry*k*Math.sin(am)+4}" font-size="11" text-anchor="middle" fill="${lab=='数据标签外'?'#333':'#fff'}" font-weight="700">${v}</text>`}a0=a1});
+ ch.innerHTML=`<svg width="330" height="240"><text x="165" y="20" text-anchor="middle" font-size="14">总成绩</text>${s}${top}${lb}${labels.map((l,i)=>`<rect x="245" y="${50+i*20}" width="10" height="10" fill="${pal[i%6]}"/><text x="260" y="${59+i*20}" font-size="11">${esc(l)}</text>`).join('')}</svg>`}
+function renderAll(){renderGrid();renderRibbon()}
+$('#chart').onmousedown=e=>{e.stopPropagation();S.chart.sel=true;curTab='图表设计';renderAll()};
+/* ===== 鼠标：选区 / 填充柄 / 右键 ===== */
+let drag=null,fdrag=null;
+const cellOf=e=>{const td=e.target.closest('#grid td');return td?{r:+td.dataset.r,c:+td.dataset.c}:null};
+$('#grid').addEventListener('mousedown',e=>{if(e.button!==0)return;if(e.target.classList.contains('farrow')){e.stopPropagation();const r=e.target.getBoundingClientRect();filterPop(+e.target.dataset.fc,r.left,r.bottom);return}
+ if(S.chart)S.chart.sel=false;const th=e.target.closest('th');let a;
+ if(th&&th.dataset.row){const r=+th.dataset.row;a={r1:r,r2:r,c1:1,c2:NC,row:true}}else if(th&&th.dataset.col){const c=+th.dataset.col;a={r1:1,r2:NR,c1:c,c2:c,col:true}}else{const p=cellOf(e);if(!p)return;a={r1:p.r,c1:p.c,r2:p.r,c2:p.c};drag=true}
+ sel=e.ctrlKey||e.metaKey?[...sel,a]:[a];renderAll()});
+$('#grid').addEventListener('mouseover',e=>{const p=cellOf(e);if(!p)return;if(drag){const a=sel[sel.length-1];a.r2=p.r;a.c2=p.c;renderGrid()}if(fdrag){fdrag.r=Math.max(fdrag.r0,p.r);document.querySelectorAll('#grid td').forEach(t=>t.style.outline=+t.dataset.c==fdrag.c&&+t.dataset.r>fdrag.r0&&+t.dataset.r<=fdrag.r?'1px dashed #217346':'')}});
+document.addEventListener('mouseup',e=>{if(drag){drag=null;renderAll()}if(fdrag){const f=fdrag;fdrag=null;if(f.r>f.r0)run('fill',`${L(f.c)}${f.r0}:${L(f.c)}${f.r}`);else renderGrid()}});
+$('#fh').addEventListener('mousedown',e=>{e.stopPropagation();e.preventDefault();const a=norm(sel[sel.length-1]);fdrag={c:a.c2,r0:a.r2,r:a.r2}});
+$('#fh').addEventListener('dblclick',e=>{const a=norm(sel[sel.length-1]);let r=a.r2;while(r<NR&&val(r+1,a.c2-1)!=='')r++;if(r>a.r2)run('fill',`${L(a.c2)}${a.r2}:${L(a.c2)}${r}`)});
+$('#grid').addEventListener('contextmenu',e=>{e.preventDefault();const th=e.target.closest('th');const base=[xi('剪切'),xi('复制'),xi('粘贴选项'),{sep:1}];
+ if(th&&th.dataset.row){const r=+th.dataset.row;if(!sel.some(a=>a.row&&inA(a,r,1)))sel=[{r1:r,r2:r,c1:1,c2:NC,row:true}];renderAll();menu(e.clientX,e.clientY,[...base,xi('插入'),xi('删除'),xi('清除内容'),{sep:1},{t:'设置单元格格式...',cmd:'ctx.format'},{t:'行高...',cmd:'ctx.rowh'},xi('隐藏'),xi('取消隐藏')]);return}
+ if(th&&th.dataset.col){const c=+th.dataset.col;if(!sel.some(a=>a.col&&inA(a,1,c)))sel=[{r1:1,r2:NR,c1:c,c2:c,col:true}];renderAll();menu(e.clientX,e.clientY,[...base,xi('插入'),xi('删除'),xi('清除内容'),{sep:1},{t:'设置单元格格式...',cmd:'ctx.format'},{t:'列宽...',cmd:'ctx.colw'},xi('隐藏'),xi('取消隐藏')]);return}
+ const p=cellOf(e);if(!p)return;if(!inSel(p.r,p.c)){sel=[{r1:p.r,c1:p.c,r2:p.r,c2:p.c}];renderAll()}
+ menu(e.clientX,e.clientY,[...base,xi('智能查找'),xi('插入...'),xi('删除...'),xi('清除内容'),{sep:1},{t:'筛选',sub:[xi('按所选单元格的值筛选')]},{t:'排序',sub:[xi('升序'),xi('降序'),{t:'自定义排序...',cmd:'data.sort'}]},{sep:1},xi('插入批注'),{t:'设置单元格格式...',cmd:'ctx.format'},xi('从下拉列表中选择...'),xi('定义名称...'),xi('超链接...')])});
+$('#stab').addEventListener('contextmenu',e=>{e.preventDefault();menu(e.clientX,e.clientY-230,[xi('插入...'),xi('删除'),{t:'重命名',cmd:'ctx.rename'},xi('移动或复制...'),xi('查看代码'),xi('保护工作表...'),{t:'工作表标签颜色',sub:cl('x:标签颜色')},xi('隐藏'),xi('取消隐藏...'),xi('选定全部工作表')])});
+$('#stab').addEventListener('dblclick',()=>run('ctx.rename'));
+$('#fxi').addEventListener('keydown',e=>{if(e.key=='Enter'){e.preventDefault();const v=$('#fxi').value;if(!v)return;run('enter',v)}});
+document.addEventListener('keydown',e=>{if(document.activeElement.tagName=='INPUT'||$('#ov').style.display=='flex'||!E||document.getElementById('view2').style.display=='block')return;if(e.key.length==1&&!e.ctrlKey&&!e.metaKey){$('#fxi').focus();$('#fxi').value=''}});
+/* ===== 模式切换 ===== */
+function setMode(md){document.querySelectorAll('.mt').forEach(t=>t.classList.toggle('on',t.dataset.m==md));closeAll();$('#ov').style.display='none';
+ const area=md=='area';$('#wrap').style.display=area?'none':'grid';$('#view2').style.display=area?'block':'none';
+ if(area){mode='area';clearInterval(window._ti);return areaView()}
+ if(md=='learn')startSession('learn',QS.map(q=>q.id));
+ if(md=='exam'){let o=JSON.parse(localStorage.getItem('xlops_order')||'null');if(!o){o=QS.map(q=>q.id).sort(()=>Math.random()-.5).slice(0,10)}startSession('exam',o)}
+ if(md=='wrong'){const w=Object.entries(PG.wrong).filter(([k,v])=>!v.m).map(([k])=>+k);mode='wrong';clearInterval(window._ti);E=null;S=base();sel=[{r1:1,c1:1,r2:1,c2:1}];renderAll();
+  $('#qp').innerHTML=`<h3 style="margin-top:0">📕 错题本</h3>${Object.keys(PG.wrong).length?`<table class="t">${Object.entries(PG.wrong).map(([k,v])=>`<tr><td>第${k}题</td><td>${QS[k-1].q}</td><td>错 ${v.cnt} 次</td><td>${v.m?'✅ 已掌握':'⏳ 待巩固'}</td></tr>`).join('')}</table>`:'<p>还没有错题。</p>'}
+  <p>${w.length?`<button class="btn" id="wgo">开始重练（${w.length} 题，答错的过 3 题再考）</button>`:''} <button class="btn gh" id="wclr">清空错题本</button></p>`;
+  if($('#wgo'))$('#wgo').onclick=()=>startSession('wrong',w);$('#wclr').onclick=()=>{if(confirm('清空错题本？')){PG.wrong={};save();setMode('wrong')}}}}
+document.querySelectorAll('.mt').forEach(t=>t.onclick=()=>setMode(t.dataset.m));
+/* ===== 选区总结 ===== */
+const AREA_Q=[['排序','(1) 带列标题的全部有效数据区域'],['筛选','(1) 带列标题的全部有效数据区域'],['分类汇总','(1) 带列标题的全部有效数据区域'],['套用表格格式','(1) 带列标题的全部有效数据区域'],['图表','(2) 带列标题，根据题目要求选'],['条件格式','(3) 不带列标题只选有效数据'],['数据验证','(3) 不带列标题只选有效数据'],['迷你图','(3) 不带列标题只选有效数据'],['单元格样式','(4) 看题目要求选']];
+const CATS=['(1) 带列标题的全部有效数据区域','(2) 带列标题，根据题目要求选','(3) 不带列标题只选有效数据','(4) 看题目要求选'];
+const AQ=[...AREA_Q.map(([o,a])=>({q:`做「${o}」时，选区应该怎么选？`,o:CATS,a})),{q:'第7题（三科不及格标黄）应选中哪个区域？',o:['A1:H7','D1:F7','D2:F7','D2:F8'],a:'D2:F7'},{q:'第12题（英语成绩百分制）应选中？',o:['F1:F7','F2:F7','A1:H7','F2:F8'],a:'F2:F7'},{q:'第13题（姓名和总成绩三维饼图）怎么选？',o:['A1:A7，按住 Ctrl 再选 G1:G7','A2:A7，按住 Ctrl 再选 G2:G7','A1:G7','只选 G1:G7'],a:'A1:A7，按住 Ctrl 再选 G1:G7'},{q:'第9题排序应选中？',o:['A1:H7','A2:H7','G1:G7','D2:F7'],a:'A1:H7'},{q:'第15题柱形迷你图的数据区域是？',o:['D1:F7','D2:F7','A1:H7','G1:G7'],a:'D2:F7'}];
+let AS=null;
+function areaView(){$('#view2').innerHTML=`<div class="card"><h2 style="margin-top:0">🎯 区域选择总结（讲义原文）</h2><table class="t"><tr><th>类别</th><th>适用操作</th><th>讲义示例</th></tr>
+<tr><td>(1) 带列标题的全部有效数据区域</td><td>排序、筛选、分类汇总、套用表格格式</td><td>如：A2:H8</td></tr><tr><td>(2) 带列标题，根据题目要求选</td><td>图表</td><td>如：选中 A2:A8，按下 Ctrl 键同时选中 G2:G8</td></tr><tr><td>(3) 不带列标题只选有效数据</td><td>条件格式、数据验证、迷你图</td><td></td></tr><tr><td>(4) 看题目要求选</td><td>单元格样式等</td><td></td></tr></table>
+<p style="font-size:12px;color:#888">注：讲义总结中的示例 A2:H8 指“标题从第 2 行开始”的表；本练习表标题在第 1 行，对应 A1:H7。</p><button class="btn" id="aq">开始选区小测（答错的过 3 题再考）</button></div><div class="card" id="aqb" style="margin-top:12px;display:none"></div>`;$('#aq').onclick=()=>{AS={list:AQ.map((_,i)=>i).sort(()=>Math.random()-.5),pend:[],ok:0,n:0};$('#aqb').style.display='block';aNext()}}
+function aNext(){AS.pend.forEach(p=>p.w--);let k=AS.pend.findIndex(p=>p.w<=0),i,re=false;if(k>=0){i=AS.pend.splice(k,1)[0].i;re=true}else if(AS.list.length)i=AS.list.shift();else if(AS.pend.length){i=AS.pend.shift().i;re=true}else{$('#aqb').innerHTML=`<h3>✅ 选区小测完成</h3><p>首次答对 ${AS.ok}/${AQ.length}，错题已全部重答正确。</p><button class="btn" onclick="areaView()">返回</button>`;return}
+ AS.n++;const q=AQ[i];$('#aqb').innerHTML=`<div style="font-size:12px;color:#888">第 ${AS.n} 题 ${re?'<span class="tag r">🔁 重考</span>':''}</div><h3>${q.q}</h3>${[...q.o].sort(()=>Math.random()-.5).map(o=>`<button class="opt">${o}</button>`).join('')}<div id="afb"></div>`;
+ $('#aqb').querySelectorAll('.opt').forEach(bt=>bt.onclick=()=>{if($('#aqb .opt.ok'))return;const ok=bt.textContent==q.a;$('#aqb').querySelectorAll('.opt').forEach(z=>{if(z.textContent==q.a)z.classList.add('ok')});if(!ok){bt.classList.add('bad');AS.pend.push({i,w:3});PG.area[i]=(PG.area[i]||0)+1}else if(!re)AS.ok++;save();
+  $('#afb').innerHTML=`<p>${ok?'✅ 正确':'❌ 错误，3 题后再考'}</p><button class="btn" id="an">下一题 →</button>`;$('#an').onclick=aNext})}
+stat();setMode('learn');
+window.__xl={get E(){return E},QS,setMode};
+</script></body></html>
