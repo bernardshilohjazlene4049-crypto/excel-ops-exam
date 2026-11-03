@@ -455,11 +455,12 @@ const DESC=/按题目要求|指定|题目要求|规则和格式/;
 const isRV=(qn,st)=>qn=='13'&&/数值/.test(st.target)||qn=='29'&&['setting','confirm','drag'].includes(st.type);
 let JQ={},JIDS=[],JPOOL=[],J={sheetAt:0,stepAt:0,sig:''};
 const VID2PDF={};
+const SHEETOV={'13':()=>{const b=base(),c={};Object.entries(b.cells).forEach(([k,v])=>{const [r,cc]=k.split(',');c[(+r+1)+','+cc]=v});c['1,1']={v:'学生成绩表'};return {...b,cells:c}}};
 function loadSteps(obj){/* 可在以后传入新的 JSON（同 practice_steps.json 结构：{questions:{id:[{type,target}]}}）覆盖判分步骤 */
  const qs=obj.qs||Object.entries(obj.questions||{}).map(([n,steps])=>({...(JQ['v'+n]||{}),n,steps}));
  qs.forEach(o=>{const id='v'+o.n,old=JQ[id]||{};const pdf=VID2PDF[o.file||old.vid];
   JQ[id]={id,json:true,n:o.n,vid:o.file||old.vid,title:o.title||old.title,q:o.title||old.title,k:'讲义 '+(o.sec||old.sec||'')+' · 视频 '+(o.file||old.vid)+(pdf?` · ≈真题第${pdf}题`:''),sec:o.sec||old.sec,
-   sheet:pdf&&QS[pdf-1].sheet?QS[pdf-1].sheet:null,raw:o.steps,
+   sheet:SHEETOV[o.n]||(pdf&&QS[pdf-1].sheet?QS[pdf-1].sheet:null),raw:o.steps,
    paths:[o.steps.map(st=>({...st,t:`【${TYN[st.type]||st.type}】${st.target}`,rv:isRV(o.n,st)}))],
    a:o.steps.map((st,i)=>`${i+1}. ${TYN[st.type]||st.type}：${st.target}`).join('<br>')+(obj.rule?`<br><span style="color:#888">判分规则：${obj.rule}</span>`:''),
    note:(obj.notes||{})[o.n]?'⚠️ '+obj.notes[o.n]+'（待核对）':''};if(!JIDS.includes(id))JIDS.push(id)});
@@ -481,7 +482,7 @@ function cmdMatch(t,path){const segs=String(t).split('→'),last=segs[segs.lengt
  for(let k=path.length-1;k>=0;k--)if(fm(last,path[k]))return path.slice(k+1);return null}
 function jEvt(ev){if(!E||E.done||!isJ())return;if($('#ov').style.display=='flex'&&ev.k!='dlg')return;const p=jP();jSkipSel();let st=p.s[p.i];if(!st)return;
  if(ev.k=='tab'){if(st.type=='tab'&&tabM(st.target,ev.v)){jAdv();jGood()}return}
- if(st.type=='select'){if(['cmd','inp','drag','key'].includes(ev.k))jBad(`先选中：${st.target}`);return}
+ if(st.type=='select'){if(['cmd','inp','drag','key'].includes(ev.k)){const t=st.target;jBad(/^[A-Z]+\d+:[A-Z]+\d+$/.test(t)?`选区不对：应选中 ${t}（当前选中 ${selStr()}）`:/标签/.test(t)?`应先单击「${t.replace(/\s*标签/,'')}」工作表标签（在表格下方）`:`先选中：${t}`)}return}
  if(ev.k=='click'){if(st.type=='click'){jAdv();jGood()}return}
  if(ev.k=='inp'||ev.k=='key'||ev.k=='drag'){const want={inp:'input',key:'key',drag:'drag'}[ev.k];
   if(st.type!=want)return ev.k=='key'?0:jBad(`这一步应：${st.t}`);
