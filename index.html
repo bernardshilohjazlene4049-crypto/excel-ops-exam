@@ -103,6 +103,7 @@ table.t{border-collapse:collapse;width:100%}table.t td,table.t th{border-bottom:
 }
 #vov{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;align-items:center;justify-content:center;z-index:150;padding:env(safe-area-inset-top) 8px env(safe-area-inset-bottom)}
 #vov .vb{background:#fff;border-radius:12px;max-width:760px;width:100%;padding:12px;max-height:96vh;overflow:auto}#vov video{width:100%;max-height:62vh;background:#000;border-radius:8px}
+@media (orientation:landscape) and (max-height:500px){#vov{padding:env(safe-area-inset-top) max(8px,env(safe-area-inset-right)) env(safe-area-inset-bottom) max(8px,env(safe-area-inset-left))}#vov .vb{max-width:none;max-height:calc(100svh - 12px);display:grid;grid-template-columns:auto 1fr;grid-template-rows:auto auto 1fr auto;column-gap:14px;padding:8px}#vov .vb>video{grid-column:1;grid-row:1/5;height:calc(100svh - 28px);max-height:none;width:calc((100svh - 84px)*9/16);object-fit:contain;object-position:top}#vov .vb>*:not(video){grid-column:2}#vov .vb>.vbtn{grid-row:4;align-self:end}}
 #vov h3{margin:0 0 4px;font-size:16px}#vov .vt{font-size:13px;color:#666;margin-bottom:8px}#vov .vbtn{display:flex;gap:8px;margin-top:8px}#vov .vbtn .btn{flex:1;min-height:46px;margin:0}
 #selbar button.on{background:#217346!important;color:#fff!important;border-color:#217346}
 /* nav3：当前项展开文字 */
